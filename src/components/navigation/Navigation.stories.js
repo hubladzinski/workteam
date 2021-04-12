@@ -1,5 +1,5 @@
 import React from "react";
-import { colors } from "../../utils/styles";
+import { theme } from "../../utils/theme";
 
 import Navigation from "./Navigation";
 
@@ -8,7 +8,7 @@ export default {
   component: Navigation,
   parameters: {
     backgrounds: {
-      values: [{ name: "dark", value: colors.background }],
+      values: [{ name: "dark", value: theme.background }],
     },
   },
 };

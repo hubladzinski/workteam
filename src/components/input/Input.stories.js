@@ -1,5 +1,5 @@
 import React from "react";
-import { colors } from "../../utils/styles";
+import { theme } from "../../utils/theme";
 
 import Input from "./Input";
 
@@ -8,7 +8,7 @@ export default {
   component: Input,
   parameters: {
     backgrounds: {
-      values: [{ name: "dark", value: colors.background }],
+      values: [{ name: "dark", value: theme.background }],
     },
   },
 };

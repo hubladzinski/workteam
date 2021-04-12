@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { colors } from "../../utils/styles";
 
 const Wrapper = styled.div`
   display: grid;
@@ -10,7 +9,7 @@ const Label = styled.label`
   font-size: 16px;
   font-family: "Montserrat", sans-serif;
   font-weight: 600;
-  color: ${colors.font1};
+  color: ${({ theme }) => theme.font1};
 `;
 
 const Field = styled.input`
@@ -20,9 +19,9 @@ const Field = styled.input`
   font-size: 16px;
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
-  color: ${colors.font1};
-  background-color: ${colors.background};
-  border: 1px solid ${colors.border};
+  color: ${({ theme }) => theme.font1};
+  background-color: ${({ theme }) => theme.background};
+  border: 1px solid ${({ theme }) => theme.border};
   border-radius: 3px;
 `;
 

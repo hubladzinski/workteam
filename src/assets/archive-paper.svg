@@ -1,0 +1,11 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 64 64">
+<title>archive paper</title>
+<g class="nc-icon-wrapper" stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" >
+<polyline fill="none"  stroke-miterlimit="10" points="2,19 2,42 2,62 62,62 62,42 62,19 "/>
+ <polyline fill="none"  stroke-miterlimit="10" points="10,36 10,2 54,2 54,36 "/> 
+ <polyline fill="none"  stroke-miterlimit="10" points="2,42 22,42 22,49 42,49 42,42 62,42 "/>
+  <line data-color="color-2" fill="none" stroke-miterlimit="10" x1="21" y1="12" x2="43" y2="12"/>
+   <line data-color="color-2" fill="none" stroke-miterlimit="10" x1="21" y1="22" x2="43" y2="22"/>
+    <line data-color="color-2" fill="none" stroke-miterlimit="10" x1="21" y1="32" x2="32" y2="32"/>
+    </g>
+    </svg>

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import { colors } from "../../utils/styles";
+import Icon from "../icon/Icon";
+import briefcaseIcon from "../../assets/briefcase.svg";
 
 const Wrapper = styled.ul`
   display: grid;
@@ -9,25 +10,37 @@ const Wrapper = styled.ul`
 
   a {
     text-decoration: none;
-    display: block;
   }
 `;
 
 const Item = styled.button`
+  display: flex;
+  align-items: flex-end;
   width: 200px;
-  height: 40px;
   padding: 10px 12px;
   font-size: 16px;
   font-family: "Montserrat", sans-serif;
   font-weight: 600;
-  color: ${colors.font1};
-  border-bottom: 1px solid ${colors.font1};
+  color: ${({ theme }) => theme.font1};
+  border-bottom: 1px solid ${({ theme }) => theme.font1};
   cursor: pointer;
+  fill: ${({ theme }) => theme.font1};
+
+  span {
+    display: block;
+    margin-left: 15px;
+  }
 
   &.active {
-    color: ${colors.primary2};
-    border-bottom: 1px solid ${colors.primary2};
+    color: ${({ theme }) => theme.primary2};
+    border-bottom: 1px solid ${({ theme }) => theme.primary2};
+    fill: ${({ theme }) => theme.primary2};
   }
+`;
+
+const StyledIcon = styled(Icon)`
+  width: 25px;
+  height: 25px;
 `;
 
 const Navigation = () => {
@@ -36,17 +49,20 @@ const Navigation = () => {
       <Wrapper>
         <li>
           <Item as={NavLink} to="/calendar" activeClassName="active">
-            Calendar
+            <StyledIcon src={briefcaseIcon} />
+            <span>Calendar</span>
           </Item>
         </li>
         <li>
           <Item as={NavLink} to="/teams" activeClassName="active">
-            Teams
+            <StyledIcon src={briefcaseIcon} />
+            <span>Teams</span>
           </Item>
         </li>
         <li>
           <Item as={NavLink} to="/inventory" activeClassName="active">
-            Inventory
+            <StyledIcon src={briefcaseIcon} />
+            <span>Inventory</span>
           </Item>
         </li>
       </Wrapper>
