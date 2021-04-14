@@ -11,4 +11,6 @@ export const theme = {
     l: "3.2rem",
     xl: "4rem",
   },
+  fontFamily1: "Montserrat",
+  fontFamily2: "Nunito Sans",
 };

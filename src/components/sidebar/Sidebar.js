@@ -11,13 +11,9 @@ const Wrapper = styled.div`
   background: ${({ theme }) => theme.background};
 `;
 
-const InnerWrapper = styled.div`
-  display: grid;
-  grid-gap: 20px;
-`;
-
 const Logo = styled.div`
   display: flex;
+  margin-bottom: 50px;
   align-items: center;
   font-family: "Nunito Sans", sans-serif;
   font-size: 24px;
@@ -35,6 +31,7 @@ const StyledIcon = styled(Icon)`
 const LoggedWrapper = styled.div`
   display: flex;
   align-items: flex-end;
+  margin-bottom: 20px;
 `;
 
 const Logged = styled.div`
@@ -51,7 +48,7 @@ const StyledButton = styled(Button)`
 const Sidebar = () => {
   return (
     <Wrapper>
-      <InnerWrapper>
+      <div>
         <Logo>
           <StyledIcon src={logoIcon} />
           <p>WorkTeam</p>
@@ -61,7 +58,7 @@ const Sidebar = () => {
           <StyledButton secondary>Logout</StyledButton>
         </LoggedWrapper>
         <Navigation />
-      </InnerWrapper>
+      </div>
     </Wrapper>
   );
 };
