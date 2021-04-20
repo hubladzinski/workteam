@@ -1,7 +1,26 @@
+import { useState } from "react";
 import styled from "styled-components";
-import ItemImage from "../../assets/pexels-james-wheeler-3936137.jpg";
 import Button from "../button/Button";
 import InventoryItem from "../inventoryItem/InventoryItem";
+
+const Individual = {
+  name: "Jan Nowak",
+  picture:
+    "https://images.pexels.com/photos/7473931/pexels-photo-7473931.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+  tel: "123456789",
+  email: "email@email.com",
+  teams: [
+    {
+      id: "01",
+      name: "Team A",
+      picture:
+        "https://images.pexels.com/photos/7473931/pexels-photo-7473931.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+    },
+  ],
+  tasks: [
+    { id: "01", name: "Task A", date: "21.02.2021", status: "Completed" },
+  ],
+};
 
 const Wrapper = styled.div`
   display: grid;
@@ -73,56 +92,74 @@ const ListLabel = styled.ul`
 `;
 
 const AdvancedWrapper = styled.div`
-  display: grid;
+  display: ${({ isOpen }) => (isOpen ? "grid" : "none")};
   grid-gap: 20px;
 `;
 
-const IndividualItem = () => (
-  <Wrapper>
-    <BasicWrapper>
-      <Picture src={ItemImage} />
-      <HeaderWrapper>
-        <Header>Jan Nowak</Header>
-        <Button>Details</Button>
-      </HeaderWrapper>
-      <ListWrapper>
-        <li>
-          Telefon:<div>123456789</div>
-        </li>
-        <li>
-          Email:<div>email@email.com</div>
-        </li>
-      </ListWrapper>
-    </BasicWrapper>
-    <AdvancedWrapper>
-      <div>
-        <H3>Teams</H3>
-        <ListLabel>
-          <li>Id</li>
-          <li>Name</li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li>Actions</li>
-        </ListLabel>
-        <InventoryItem />
-      </div>
-      <div>
-        <H3>Tasks history</H3>
-        <ListLabel>
-          <li>Id</li>
-          <li>Task</li>
-          <li>Date</li>
-          <li>Status</li>
-          <li></li>
-          <li></li>
-          <li>Actions</li>
-        </ListLabel>
-        <InventoryItem />
-      </div>
-    </AdvancedWrapper>
-  </Wrapper>
-);
+const IndividualItem = () => {
+  const { name, picture, tel, email, teams, tasks } = Individual;
+
+  const [toggleDetails, setToggleDetails] = useState(false);
+
+  return (
+    <Wrapper>
+      <BasicWrapper>
+        <Picture src={picture} />
+        <HeaderWrapper>
+          <Header>{name}</Header>
+          <Button onClick={() => setToggleDetails(!toggleDetails)}>
+            Details
+          </Button>
+        </HeaderWrapper>
+        <ListWrapper>
+          <li>
+            Telefon:<div>{tel}</div>
+          </li>
+          <li>
+            Email:<div>{email}</div>
+          </li>
+        </ListWrapper>
+      </BasicWrapper>
+      <AdvancedWrapper isOpen={toggleDetails}>
+        <div>
+          <H3>Teams</H3>
+          <ListLabel>
+            <li>Id</li>
+            <li>Name</li>
+            <li>Picture</li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li>Actions</li>
+          </ListLabel>
+          <InventoryItem
+            id={teams[0].id}
+            name={teams[0].name}
+            picture={teams[0].picture}
+          />
+        </div>
+        <div>
+          <H3>Tasks history</H3>
+          <ListLabel>
+            <li>Id</li>
+            <li>Task</li>
+            <li>Date</li>
+            <li>Status</li>
+            <li></li>
+            <li></li>
+            <li>Actions</li>
+          </ListLabel>
+          <InventoryItem
+            id={tasks[0].id}
+            name={tasks[0].name}
+            date={tasks[0].date}
+            status={tasks[0].status}
+            isTask={true}
+          />
+        </div>
+      </AdvancedWrapper>
+    </Wrapper>
+  );
+};
 
 export default IndividualItem;

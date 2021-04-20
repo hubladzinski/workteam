@@ -7,6 +7,7 @@ import Sidebar from "../components/sidebar/Sidebar";
 
 const Wrapper = styled.div`
   display: flex;
+  height: 100%;
 `;
 
 const Background = styled.div`

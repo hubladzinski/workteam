@@ -1,10 +1,13 @@
 import styled from "styled-components";
 import Button from "../button/Button";
-import ItemImage from "../../assets/pexels-james-wheeler-3936137.jpg";
 
 const Wrapper = styled.ul`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  grid-template-areas: ${({ isTask }) =>
+    isTask
+      ? `"id name date status price picture actions"`
+      : `"id name picture status price date actions"`};
   align-items: center;
   align-content: center;
   height: 75px;
@@ -14,7 +17,32 @@ const Wrapper = styled.ul`
   border: 1px solid ${({ theme }) => theme.border2};
 `;
 
+const IdWrapper = styled.li`
+  grid-area: id;
+`;
+
+const NameWrapper = styled.li`
+  grid-area: name;
+`;
+
+const PictureWrapper = styled.li`
+  grid-area: picture;
+`;
+
+const PriceWrapper = styled.li`
+  grid-area: price;
+`;
+
+const DateWrapper = styled.li`
+  grid-area: date;
+`;
+
+const ActionsWrapper = styled.li`
+  grid-area: actions;
+`;
+
 const Picture = styled.img`
+  display: ${({ isTask }) => (isTask ? "none" : "inline-block")};
   height: 50px;
   width: 50px;
   border-radius: 50%;
@@ -29,24 +57,24 @@ const StyledButton = styled(Button)`
   border-bottom: 1px solid ${({ theme }) => theme.primary2};
 `;
 
-const InventoryItem = () => (
-  <Wrapper>
-    <li>02</li>
-    <li>Kekw</li>
-    <li>
-      <Picture src={ItemImage} />
-    </li>
-    <Status>In stock</Status>
-    <li>65,3</li>
-    <li>21.02.2012</li>
-    <li>
+const InventoryItem = ({ id, name, picture, status, price, date, isTask }) => (
+  <Wrapper isTask={isTask}>
+    <IdWrapper>{id}</IdWrapper>
+    <NameWrapper>{name}</NameWrapper>
+    <PictureWrapper>
+      <Picture src={picture} isTask={isTask} />
+    </PictureWrapper>
+    <Status>{status}</Status>
+    <PriceWrapper>{price}</PriceWrapper>
+    <DateWrapper>{date}</DateWrapper>
+    <ActionsWrapper>
       <div>
         <StyledButton secondary>Edit</StyledButton>
       </div>
       <div>
         <StyledButton secondary>Delete</StyledButton>
       </div>
-    </li>
+    </ActionsWrapper>
   </Wrapper>
 );
 

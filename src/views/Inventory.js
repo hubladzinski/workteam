@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+import { addItem, removeItem } from "../reducers/index";
 import MainTemplate from "../templates/MainTemplate";
 import Card from "../components/card/Card";
 import InventoryItem from "../components/inventoryItem/InventoryItem";
@@ -25,41 +27,87 @@ const ListItems = styled.ul`
   list-style: none;
 `;
 
-const Schedule = () => (
-  <MainTemplate>
-    <Header>Inventory</Header>
-    <Card>
-      <ListLabel>
-        <li>Id</li>
-        <li>Name</li>
-        <li>Picture</li>
-        <li>Status</li>
-        <li>Price</li>
-        <li>Date added</li>
-        <li>Actions</li>
-      </ListLabel>
-      <ListItems>
-        <li>
-          <InventoryItem />
-        </li>
-        <li>
-          <InventoryItem />
-        </li>
-        <li>
-          <InventoryItem />
-        </li>
-        <li>
-          <InventoryItem />
-        </li>
-        <li>
-          <InventoryItem />
-        </li>
-        <li>
-          <InventoryItem />
-        </li>
-      </ListItems>
-    </Card>
-  </MainTemplate>
-);
+const Schedule = () => {
+  const { inventory } = useSelector((state) => state.root);
+
+  return (
+    <MainTemplate>
+      <Header>Inventory</Header>
+      <Card>
+        <ListLabel>
+          <li>Id</li>
+          <li>Name</li>
+          <li>Picture</li>
+          <li>Status</li>
+          <li>Price</li>
+          <li>Date added</li>
+          <li>Actions</li>
+        </ListLabel>
+        <ListItems>
+          <li>
+            <InventoryItem
+              id={inventory[0].id}
+              name={inventory[0].name}
+              picture={inventory[0].picture}
+              status={inventory[0].status}
+              price={inventory[0].price}
+              date={inventory[0].date}
+            />
+          </li>
+          <li>
+            <InventoryItem
+              id={inventory[0].id}
+              name={inventory[0].name}
+              picture={inventory[0].picture}
+              status={inventory[0].status}
+              price={inventory[0].price}
+              date={inventory[0].date}
+            />
+          </li>
+          <li>
+            <InventoryItem
+              id={inventory[0].id}
+              name={inventory[0].name}
+              picture={inventory[0].picture}
+              status={inventory[0].status}
+              price={inventory[0].price}
+              date={inventory[0].date}
+            />
+          </li>
+          <li>
+            <InventoryItem
+              id={inventory[0].id}
+              name={inventory[0].name}
+              picture={inventory[0].picture}
+              status={inventory[0].status}
+              price={inventory[0].price}
+              date={inventory[0].date}
+            />
+          </li>
+          <li>
+            <InventoryItem
+              id={inventory[0].id}
+              name={inventory[0].name}
+              picture={inventory[0].picture}
+              status={inventory[0].status}
+              price={inventory[0].price}
+              date={inventory[0].date}
+            />
+          </li>
+          <li>
+            <InventoryItem
+              id={inventory[0].id}
+              name={inventory[0].name}
+              picture={inventory[0].picture}
+              status={inventory[0].status}
+              price={inventory[0].price}
+              date={inventory[0].date}
+            />
+          </li>
+        </ListItems>
+      </Card>
+    </MainTemplate>
+  );
+};
 
 export default Schedule;
