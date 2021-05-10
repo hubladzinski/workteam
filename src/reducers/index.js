@@ -35,6 +35,46 @@ export const rootSlice = createSlice({
         date: "21.02.2021",
       },
     ],
+    tasks: [
+      {
+        id: 1,
+        title: "Hello its me 1",
+        date_start: new Date(2021, 4, 5, 15, 45),
+        date_end: new Date(2022, 11, 10, 15, 55),
+        note:
+          "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. ",
+        steps: [
+          {
+            order: 1,
+            task: "Do it 1#",
+          },
+          {
+            order: 2,
+            task: "Do it 2#",
+          },
+        ],
+        users: [],
+        teams: [],
+      },
+      {
+        id: 2,
+        title: "Hello its me 2",
+        date_start: new Date(2021, 5, 3, 15, 10),
+        date_end: new Date(2022, 11, 10, 16, 50),
+        note:
+          "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. ",
+        users: [],
+        teams: [],
+      },
+    ],
+    user: {
+      email: "User",
+      _id: "",
+      uid: "",
+      token: "",
+      loginStatus: false,
+      admin: [],
+    },
   },
   reducers: {
     addItem: (state, action) => {
@@ -48,9 +88,12 @@ export const rootSlice = createSlice({
         (item) => item.id !== action.payload.id
       );
     },
+    setUserInfo: (state, action) => {
+      state.user = action.payload;
+    },
   },
 });
 
-export const { addItem, removeItem } = rootSlice.actions;
+export const { addItem, removeItem, setUserInfo } = rootSlice.actions;
 
 export default rootSlice.reducer;

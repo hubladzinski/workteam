@@ -1,8 +1,10 @@
 export const theme = {
   primary1: "#E55A28",
   primary2: "#FE5E25",
+  note: "#FE5E25CC",
   background: "#1B262C",
   font1: "#E9E9E9",
+  font2: "#1B262C",
   border: "#E9E9E966",
   border2: "#3E3E3E",
   fontSize: {

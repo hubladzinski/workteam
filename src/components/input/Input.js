@@ -13,7 +13,7 @@ const Label = styled.label`
 `;
 
 const Field = styled.input`
-  width: 300px;
+  width: 100%;
   height: 55px;
   padding: 10px;
   font-size: 16px;
@@ -25,11 +25,11 @@ const Field = styled.input`
   border-radius: 3px;
 `;
 
-const Input = () => {
+const Input = ({ children, label, type, ...props }) => {
   return (
-    <Wrapper>
-      <Label for="password">Log in with google</Label>
-      <Field id="password" />
+    <Wrapper {...props}>
+      <Label htmlFor={label}>{children}</Label>
+      <Field type={type} id={label} />
     </Wrapper>
   );
 };

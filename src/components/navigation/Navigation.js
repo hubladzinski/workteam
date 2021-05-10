@@ -16,7 +16,6 @@ const Wrapper = styled.ul`
 const Item = styled.button`
   display: flex;
   align-items: flex-end;
-  width: 200px;
   padding: 10px 12px;
   font-size: 16px;
   font-family: "Montserrat", sans-serif;

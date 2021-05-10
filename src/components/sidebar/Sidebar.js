@@ -3,10 +3,11 @@ import Navigation from "../navigation/Navigation";
 import Icon from "../icon/Icon";
 import logoIcon from "../../assets/archive-paper.svg";
 import Button from "../button/Button";
+import { useSelector, useDispatch } from "react-redux";
 
 const Wrapper = styled.div`
-  width: 240px;
-  height: 100vh;
+  min-width: 300px;
+  min-height: 100vh;
   padding: 40px 20px;
   background: ${({ theme }) => theme.background};
 `;
@@ -28,37 +29,28 @@ const StyledIcon = styled(Icon)`
   margin-right: 15px;
 `;
 
-const LoggedWrapper = styled.div`
-  display: flex;
-  align-items: flex-end;
-  margin-bottom: 20px;
-`;
-
 const Logged = styled.div`
   font-weight: 600;
   font-size: 26px;
   color: ${({ theme }) => theme.font1};
-  margin-right: 15px;
 `;
 
 const StyledButton = styled(Button)`
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 `;
 
 const Sidebar = () => {
+  const { user } = useSelector((state) => state.root);
+
   return (
     <Wrapper>
-      <div>
-        <Logo>
-          <StyledIcon src={logoIcon} />
-          <p>WorkTeam</p>
-        </Logo>
-        <LoggedWrapper>
-          <Logged>hublad</Logged>
-          <StyledButton secondary>Logout</StyledButton>
-        </LoggedWrapper>
-        <Navigation />
-      </div>
+      <Logo>
+        <StyledIcon src={logoIcon} />
+        <p>WorkTeam</p>
+      </Logo>
+      <Logged>{user.email}</Logged>
+      <StyledButton secondary>Logout</StyledButton>
+      <Navigation />
     </Wrapper>
   );
 };
