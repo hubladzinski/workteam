@@ -26,7 +26,7 @@ const Time = styled.p`
   font-size: 16px;
 `;
 
-const Note = ({ id, title, time }) => {
+const Note = ({ id, title, time_start, time_end, note, steps, users }) => {
   const [redirect, setRedirect] = useState(false);
 
   const handleClick = () => {
@@ -34,13 +34,28 @@ const Note = ({ id, title, time }) => {
   };
 
   if (redirect) {
-    return <Redirect to={`/calendar/task/${id}`} />;
+    return (
+      <Redirect
+        to={{
+          pathname: `/calendar/task/${id}`,
+          data: {
+            _id: id,
+            title: title,
+            time_start: time_start,
+            time_end: time_end,
+            note: note,
+            steps: steps,
+            users: users,
+          },
+        }}
+      />
+    );
   }
 
   return (
     <Wrapper onClick={handleClick}>
       <Title>{title}</Title>
-      <Time>{time}</Time>
+      <Time>{`${time_start.getHours()}:${time_start.getMinutes()} - ${time_end.getHours()}:${time_end.getMinutes()}`}</Time>
     </Wrapper>
   );
 };

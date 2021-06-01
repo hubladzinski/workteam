@@ -1,5 +1,14 @@
 import styled, { css } from "styled-components";
 import numWords from "num-words";
+import Button from "../button/Button";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { putTask } from "../../reducers/calendarSlice";
+
+const Wrapper = styled.div`
+  display: grid;
+  grid-gap: 15px;
+`;
 
 const List = styled.ul`
   display: grid;
@@ -79,24 +88,75 @@ const States = {
   idle: "idle",
 };
 
-const Progress = ({ steps, ...props }) => (
-  <List {...props}>
-    {steps.map((step, index) => (
-      <ListItem>
-        <Checkmark
-          state={step.status}
-          index={index}
-          itemsLength={steps.length}
-        />
-        <StepWrapper>
-          <TextWrapper>
-            <Eyebrow>Step {numWords(index + 1)}</Eyebrow>
-            <Title>{step.task}</Title>
-          </TextWrapper>
-        </StepWrapper>
-      </ListItem>
-    ))}
-  </List>
-);
+const StyledButton = styled(Button)`
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  font-size: 10px;
+  margin-left: 20px;
+`;
+
+const StyledSubmitButton = styled(Button)`
+  width: 250px;
+`;
+
+const Progress = ({ steps, taskID, ...props }) => {
+  const dispatch = useDispatch();
+  const [stepsState, setStepsState] = useState(steps);
+  const [stateUpdated, setStateUpdated] = useState(false);
+
+  const handleClick = async (stepIndex) => {
+    await setStepsState((prevState) => {
+      const newState = prevState.map((step, index) => {
+        if (index < stepIndex + 1) {
+          return { ...step, status: "completed" };
+        }
+        if (index === stepIndex + 1) {
+          return { ...step, status: "inProgress" };
+        }
+        return { ...step, status: "idle" };
+      });
+      return newState;
+    });
+    setStateUpdated(true);
+  };
+
+  const handleDispatch = (taskID, stepsState) => {
+    setStateUpdated(false);
+    dispatch(putTask({ taskID, stepsState }));
+  };
+
+  return (
+    <Wrapper>
+      <List {...props}>
+        {stepsState.map((step, index) => (
+          <ListItem key={index}>
+            <Checkmark
+              state={step.status}
+              index={index}
+              itemsLength={steps.length}
+            />
+            <StepWrapper>
+              <TextWrapper>
+                <Eyebrow>Step {numWords(index + 1)}</Eyebrow>
+                <Title>{step.task}</Title>
+              </TextWrapper>
+            </StepWrapper>
+            {step.status === "inProgress" && (
+              <StyledButton onClick={() => handleClick(index)}>
+                <i class="fas fa-check"></i>
+              </StyledButton>
+            )}
+          </ListItem>
+        ))}
+      </List>
+      {stateUpdated && (
+        <StyledSubmitButton onClick={() => handleDispatch(taskID, stepsState)}>
+          Update steps
+        </StyledSubmitButton>
+      )}
+    </Wrapper>
+  );
+};
 
 export default Progress;

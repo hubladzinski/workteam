@@ -55,13 +55,19 @@ const Navigation = () => {
         <li>
           <Item as={NavLink} to="/teams" activeClassName="active">
             <StyledIcon src={briefcaseIcon} />
-            <span>Teams</span>
+            <span>People</span>
           </Item>
         </li>
         <li>
           <Item as={NavLink} to="/inventory" activeClassName="active">
             <StyledIcon src={briefcaseIcon} />
             <span>Inventory</span>
+          </Item>
+        </li>
+        <li>
+          <Item as={NavLink} to="/user" activeClassName="active">
+            <StyledIcon src={briefcaseIcon} />
+            <span>User profile</span>
           </Item>
         </li>
       </Wrapper>

@@ -1,7 +1,9 @@
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Progress from "../progress/Progress";
-import { useState } from "react";
 import IndividualItem from "../individualItem/IndividualItem";
+import { requestType } from "../../backend/backend";
 
 const Header = styled.h2`
   font-size: 26px;
@@ -52,56 +54,45 @@ const ProgressWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.border2};
 `;
 
-const PeopleWrapper = styled.div``;
+const NoteDetails = ({ task }) => {
+  const { user } = useSelector((state) => state.user);
+  const [people, setPeople] = useState();
 
-const NoteDetails = () => {
-  const [task, setTask] = useState({
-    id: 1,
-    title: "Hello its me 1",
-    date_start: new Date(2021, 4, 5, 15, 45),
-    date_end: new Date(2022, 11, 10, 15, 55),
-    note:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layou",
-    steps: [
-      {
-        order: 1,
-        task: "Do it 1#",
-        status: "completed",
-      },
-      {
-        order: 2,
-        task: "Do it 2#",
-        status: "inProgress",
-      },
-      {
-        order: 3,
-        task: "Do it 3#",
-        status: "idle",
-      },
-      {
-        order: 3,
-        task: "Do it 3#",
-        status: "idle",
-      },
-      {
-        order: 3,
-        task: "Do it 3#",
-        status: "idle",
-      },
-      {
-        order: 3,
-        task: "Do it 3#",
-        status: "idle",
-      },
-      {
-        order: 3,
-        task: "Do it 3#",
-        status: "idle",
-      },
-    ],
-    users: [],
-    teams: [],
-  });
+  const fetchData = async (request) => {
+    try {
+      const response = await fetch(request.url, request.options);
+      const json = await response.json();
+      return json;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (task.users.length > 0) {
+      setPeople([]);
+      task.users.forEach((id) => {
+        const request = {
+          url: `${requestType.get_users}/${id}`,
+          options: {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+              "Content-Type": "application/json",
+            },
+          },
+        };
+        const response = fetchData(request);
+        response.then((fetchedData) =>
+          setPeople((prevState) =>
+            prevState ? [...prevState, fetchedData] : [fetchedData]
+          )
+        );
+      });
+    } else {
+      setPeople([]);
+    }
+  }, [task.users, user.token]);
 
   return (
     <div>
@@ -111,12 +102,12 @@ const NoteDetails = () => {
           <HeaderMinor>Time</HeaderMinor>
           <TimeItems>
             <li>
-              From: {task.date_start.toDateString()}{" "}
-              {task.date_start.getHours()}:{task.date_start.getMinutes()}
+              From: {task.time_start.toDateString()}{" "}
+              {task.time_start.getHours()}:{task.time_start.getMinutes()}
             </li>
             <li>
-              To: {task.date_end.toDateString()} {task.date_end.getHours()}:
-              {task.date_end.getMinutes()}
+              To: {task.time_end.toDateString()} {task.time_end.getHours()}:
+              {task.time_end.getMinutes()}
             </li>
           </TimeItems>
           <HeaderMinor>Note</HeaderMinor>
@@ -125,14 +116,25 @@ const NoteDetails = () => {
         <InnerWrapper>
           <HeaderMinor>Steps</HeaderMinor>
           <ProgressWrapper>
-            <Progress steps={task.steps} />
+            <Progress steps={task.steps} taskID={task._id} />
           </ProgressWrapper>
         </InnerWrapper>
       </DetailsWrapper>
-      <PeopleWrapper>
+      <div>
         <HeaderMinor>People/Teams</HeaderMinor>
-        <IndividualItem />
-      </PeopleWrapper>
+        {people &&
+          people.map((user) => (
+            <IndividualItem
+              key={user._id}
+              _id={user._id}
+              taskId={task._id}
+              name={user.name}
+              email={user.email}
+              picture={user.picture}
+              tel={user.tel}
+            />
+          ))}
+      </div>
     </div>
   );
 };

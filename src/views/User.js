@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import MainTemplate from "../templates/MainTemplate";
 import Card from "../components/card/Card";
-import NoteDetails from "../components/noteDetails/NoteDetails";
+import UserTemplate from "../templates/UserTemplate";
 
 const Header = styled.h2`
   font-family: ${({ theme }) => theme.fontFamily2};
@@ -9,11 +9,11 @@ const Header = styled.h2`
   font-size: 32px;
 `;
 
-const DetailsPage = ({ location }) => (
+const DetailsPage = () => (
   <MainTemplate>
-    <Header>Schedule</Header>
+    <Header>User profile</Header>
     <Card>
-      <NoteDetails task={location.data} />
+      <UserTemplate />
     </Card>
   </MainTemplate>
 );

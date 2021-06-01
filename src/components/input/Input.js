@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import { useField } from "formik";
 
 const Wrapper = styled.div`
   display: grid;
@@ -10,6 +11,18 @@ const Label = styled.label`
   font-family: "Montserrat", sans-serif;
   font-weight: 600;
   color: ${({ theme }) => theme.font1};
+
+  ${({ secondary }) =>
+    secondary &&
+    css`
+      color: ${({ theme }) => theme.font2};
+    `}
+
+  ${({ editMode }) =>
+    editMode &&
+    css`
+      display: none;
+    `}
 `;
 
 const Field = styled.input`
@@ -23,13 +36,43 @@ const Field = styled.input`
   background-color: ${({ theme }) => theme.background};
   border: 1px solid ${({ theme }) => theme.border};
   border-radius: 3px;
+
+  ${({ secondary }) =>
+    secondary &&
+    css`
+      color: ${({ theme }) => theme.font2};
+      background-color: transparent;
+      border: 1px solid ${({ theme }) => theme.border3};
+    `}
 `;
 
-const Input = ({ children, label, type, ...props }) => {
+const Input = ({
+  label,
+  type,
+  secondary,
+  editMode,
+  component,
+  name,
+  accept,
+  ...props
+}) => {
+  const [field] = useField(name);
+
   return (
     <Wrapper {...props}>
-      <Label htmlFor={label}>{children}</Label>
-      <Field type={type} id={label} />
+      <Label secondary={secondary} editMode={editMode} htmlFor={name}>
+        {label}
+      </Label>
+      <Field
+        secondary={secondary}
+        id={name}
+        name={name}
+        type={type}
+        accept={accept}
+        as={component}
+        {...field}
+        {...props}
+      />
     </Wrapper>
   );
 };

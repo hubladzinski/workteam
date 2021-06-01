@@ -1,8 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import rootReducer from "../reducers/index";
+import userReducer from "../reducers/userSlice";
+import inventoryReducer from "../reducers/inventorySlice";
+import peopleReducer from "../reducers/peopleSlice";
+import calendarReducer from "../reducers/calendarSlice";
 
 export default configureStore({
   reducer: {
-    root: rootReducer,
+    user: userReducer,
+    inventory: inventoryReducer,
+    people: peopleReducer,
+    calendar: calendarReducer,
   },
 });

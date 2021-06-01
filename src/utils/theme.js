@@ -7,6 +7,8 @@ export const theme = {
   font2: "#1B262C",
   border: "#E9E9E966",
   border2: "#3E3E3E",
+  border3: "#3E3E3E66",
+  focus1: "#3E3E3E1A",
   fontSize: {
     s: "1rem",
     m: "1.6rem",

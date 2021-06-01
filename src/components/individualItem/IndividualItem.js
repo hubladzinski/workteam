@@ -1,26 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Button from "../button/Button";
-import InventoryItem from "../inventoryItem/InventoryItem";
-
-const Individual = {
-  name: "Jan Nowak",
-  picture:
-    "https://images.pexels.com/photos/7473931/pexels-photo-7473931.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-  tel: "123456789",
-  email: "email@email.com",
-  teams: [
-    {
-      id: "01",
-      name: "Team A",
-      picture:
-        "https://images.pexels.com/photos/7473931/pexels-photo-7473931.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-    },
-  ],
-  tasks: [
-    { id: "01", name: "Task A", date: "21.02.2021", status: "Completed" },
-  ],
-};
+import { requestType } from "../../backend/backend";
+import TasksList from "../taskItem/Complex/tasksList";
+import { useSpring, animated, useTransition } from "react-spring";
 
 const Wrapper = styled.div`
   display: grid;
@@ -44,6 +28,10 @@ const Picture = styled.img`
 
 const HeaderWrapper = styled.div`
   margin-right: 70px;
+
+  button {
+    width: 250px;
+  }
 `;
 
 const Header = styled.h2`
@@ -75,31 +63,49 @@ const ListWrapper = styled.div`
   }
 `;
 
-const H3 = styled.h3`
-  font-size: 22px;
-  font-weight: 500;
-`;
-
-const ListLabel = styled.ul`
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  align-items: center;
-  list-style: none;
-  text-align: center;
-  height: 30px;
-  margin: 15px 0;
-  font-weight: 500;
-`;
-
 const AdvancedWrapper = styled.div`
-  display: ${({ isOpen }) => (isOpen ? "grid" : "none")};
+  display: grid;
   grid-gap: 20px;
 `;
 
-const IndividualItem = () => {
-  const { name, picture, tel, email, teams, tasks } = Individual;
-
+const IndividualItem = ({ _id, name, email, picture, tel, taskId }) => {
+  const { user } = useSelector((state) => state.user);
   const [toggleDetails, setToggleDetails] = useState(false);
+  const [tasks, setTasks] = useState([]);
+
+  const transitions = useTransition(toggleDetails, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+    reverse: toggleDetails,
+    delay: 100,
+  });
+
+  const fetchData = async (request, callback) => {
+    try {
+      const response = await fetch(request.url, request.options);
+      const json = await response.json();
+      callback(json);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (toggleDetails) {
+      const request = {
+        url: `${requestType.get_user_tasks}/${_id}`,
+        options: {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            "Content-Type": "application/json",
+          },
+        },
+      };
+      fetchData(request, setTasks);
+    }
+  }, [toggleDetails, user.token, _id]);
 
   return (
     <Wrapper>
@@ -107,7 +113,7 @@ const IndividualItem = () => {
         <Picture src={picture} />
         <HeaderWrapper>
           <Header>{name}</Header>
-          <Button onClick={() => setToggleDetails(!toggleDetails)}>
+          <Button onClick={() => setToggleDetails((prevState) => !prevState)}>
             Details
           </Button>
         </HeaderWrapper>
@@ -120,44 +126,17 @@ const IndividualItem = () => {
           </li>
         </ListWrapper>
       </BasicWrapper>
-      <AdvancedWrapper isOpen={toggleDetails}>
-        <div>
-          <H3>Teams</H3>
-          <ListLabel>
-            <li>Id</li>
-            <li>Name</li>
-            <li>Picture</li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li>Actions</li>
-          </ListLabel>
-          <InventoryItem
-            id={teams[0].id}
-            name={teams[0].name}
-            picture={teams[0].picture}
-          />
-        </div>
-        <div>
-          <H3>Tasks history</H3>
-          <ListLabel>
-            <li>Id</li>
-            <li>Task</li>
-            <li>Date</li>
-            <li>Status</li>
-            <li></li>
-            <li></li>
-            <li>Actions</li>
-          </ListLabel>
-          <InventoryItem
-            id={tasks[0].id}
-            name={tasks[0].name}
-            date={tasks[0].date}
-            status={tasks[0].status}
-            isTask={true}
-          />
-        </div>
-      </AdvancedWrapper>
+      {transitions(
+        (styles, item) =>
+          item &&
+          toggleDetails && (
+            <animated.div style={styles}>
+              <AdvancedWrapper>
+                <TasksList tasks={tasks} taskId={taskId} />
+              </AdvancedWrapper>
+            </animated.div>
+          )
+      )}
     </Wrapper>
   );
 };

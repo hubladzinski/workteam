@@ -40,7 +40,7 @@ const StyledButton = styled(Button)`
 `;
 
 const Sidebar = () => {
-  const { user } = useSelector((state) => state.root);
+  const { user } = useSelector((state) => state.user);
 
   return (
     <Wrapper>

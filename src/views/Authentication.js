@@ -3,23 +3,23 @@ import styled from "styled-components";
 import { ThemeProvider } from "styled-components";
 import { theme } from "../utils/theme";
 import GlobalStyle from "../utils/globalStyles";
-import SidebarLogin from "../components/sidebar/SidebarLogin";
+import SidebarAuthentication from "../components/sidebar/SidebarAuthentication";
 
 const Wrapper = styled.div`
   background: ${({ theme }) => theme.font1};
 `;
 
-const Login = () => {
+const Authentication = ({ mode }) => {
   return (
     <>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <Wrapper>
-          <SidebarLogin />
+          <SidebarAuthentication mode={mode} />
         </Wrapper>
       </ThemeProvider>
     </>
   );
 };
 
-export default Login;
+export default Authentication;

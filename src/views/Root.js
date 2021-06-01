@@ -1,21 +1,31 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import AuthRoute from "../utils/AuthRoute";
 import Schedule from "../views/Schedule";
 import Inventory from "../views/Inventory";
 import Individuals from "../views/Individuals";
-import Login from "../views/Login";
-import Signup from "../views/Signup";
+import Login from "./Authentication";
 import DetailsPage from "../views/DetailsPage";
+import User from "../views/User";
 
 const Root = () => (
   <BrowserRouter>
     <Switch>
-      <Route exact path="/" component={Schedule} />
-      <Route exact path="/calendar" component={Schedule} />
-      <Route exact path="/calendar/task/:id" component={DetailsPage} />
-      <Route exact path="/inventory" component={Inventory} />
-      <Route exact path="/teams" component={Individuals} />
-      <Route exact path="/login" component={Login} />
-      <Route exact path="/signup" component={Signup} />
+      <AuthRoute exact path="/" component={Schedule} />
+      <AuthRoute exact path="/calendar" component={Schedule} />
+      <AuthRoute exact path="/calendar/task/:id" component={DetailsPage} />
+      <AuthRoute exact path="/inventory" component={Inventory} />
+      <AuthRoute exact path="/teams" component={Individuals} />
+      <AuthRoute exact path="/user" component={User} />
+      <Route
+        exact
+        path="/login"
+        render={(props) => <Login {...props} mode="login" />}
+      />
+      <Route
+        exact
+        path="/signup"
+        render={(props) => <Login {...props} mode="signup" />}
+      />
     </Switch>
   </BrowserRouter>
 );
