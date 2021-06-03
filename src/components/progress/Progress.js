@@ -2,8 +2,10 @@ import styled, { css } from "styled-components";
 import numWords from "num-words";
 import Button from "../button/Button";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { putTask } from "../../reducers/calendarSlice";
+import Feedback from "../feedback/Feedback";
+import { resetStatus } from "../../reducers/calendarSlice";
 
 const Wrapper = styled.div`
   display: grid;
@@ -102,6 +104,9 @@ const StyledSubmitButton = styled(Button)`
 
 const Progress = ({ steps, taskID, ...props }) => {
   const dispatch = useDispatch();
+  const { putStatus, putResponse, putError } = useSelector(
+    (state) => state.calendar
+  );
   const [stepsState, setStepsState] = useState(steps);
   const [stateUpdated, setStateUpdated] = useState(false);
 
@@ -155,6 +160,20 @@ const Progress = ({ steps, taskID, ...props }) => {
           Update steps
         </StyledSubmitButton>
       )}
+      <Feedback
+        onClick={() =>
+          dispatch(
+            resetStatus({
+              statusType: "putStatus",
+              errorType: "putError",
+            })
+          )
+        }
+        message={putError ? putError : putResponse}
+        activate={
+          putStatus === "succeeded" || putStatus === "failed" ? true : false
+        }
+      />
     </Wrapper>
   );
 };

@@ -25,6 +25,7 @@ const initialState = {
   status: "idle",
   error: null,
   editStatus: "idle",
+  editResponse: "",
   editError: null,
 };
 
@@ -177,13 +178,13 @@ export const editUser = createAsyncThunk(
         },
       };
       const response = await fetch(request.url, request.options);
-      await response.json();
+      const json = await response.json();
       const userInfo = {
         name,
         tel,
         picture: photoURL,
       };
-      return userInfo;
+      return { response: json, userInfo };
     } catch (err) {
       return err;
     }
@@ -244,17 +245,18 @@ export const userSlice = createSlice({
       if (action.payload.picture) {
         state.user = {
           ...state.user,
-          name: action.payload.name,
-          tel: action.payload.tel,
-          picture: action.payload.picture,
+          name: action.payload.userInfo.name,
+          tel: action.payload.userInfo.tel,
+          picture: action.payload.userInfo.picture,
         };
       } else {
         state.user = {
           ...state.user,
-          name: action.payload.name,
-          tel: action.payload.tel,
+          name: action.payload.userInfo.name,
+          tel: action.payload.userInfo.tel,
         };
       }
+      state.editResponse = action.payload.response.response;
     },
     [editUser.rejected]: (state, action) => {
       state.editStatus = "failed";

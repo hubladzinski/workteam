@@ -90,9 +90,14 @@ const UserEditSchema = Yup.object().shape({
 });
 
 const UserTemplate = (props) => {
-  const { user, status, error, editStatus, editError } = useSelector(
-    (state) => state.user
-  );
+  const {
+    user,
+    status,
+    error,
+    editStatus,
+    editError,
+    editResponse,
+  } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [editPicture, setEditPicture] = useState(false);
   const [currentPicture, setCurrentPicture] = useState();
@@ -219,7 +224,7 @@ const UserTemplate = (props) => {
                 })
               )
             }
-            message={editError ? editError : "Profile edited"}
+            message={editError ? editError : editResponse}
             activate={
               editStatus === "succeeded" || editStatus === "failed"
                 ? true

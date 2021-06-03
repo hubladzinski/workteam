@@ -7,7 +7,7 @@ import Note from "../note/Note";
 import TaskForm from "../taskForm/TaskForm";
 import { setItem, getTasks, resetStatus } from "../../reducers/calendarSlice";
 import Feedback from "../feedback/Feedback";
-import { useSpring, animated, useTransition } from "react-spring";
+import { animated, useTransition } from "react-spring";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -128,9 +128,14 @@ const CloseMark = styled.div`
 
 const Calendar = () => {
   const dispatch = useDispatch();
-  const { time, searchCalendar, tasks, addStatus, addError } = useSelector(
-    (state) => state.calendar
-  );
+  const {
+    time,
+    searchCalendar,
+    tasks,
+    addStatus,
+    addError,
+    addResponse,
+  } = useSelector((state) => state.calendar);
   const [weekDays, setWeekDays] = useState([]);
   const [selectedDay, setSelectedDay] = useState();
   const [showTaskForm, setShowTaskForm] = useState(false);
@@ -335,7 +340,7 @@ const Calendar = () => {
             })
           )
         }
-        message={addError ? addError : "Task added"}
+        message={addError ? addError : addResponse}
         activate={
           addStatus === "succeeded" || addStatus === "failed" ? true : false
         }

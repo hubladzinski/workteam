@@ -25,8 +25,10 @@ const initialState = {
   status: "idle",
   error: null,
   addStatus: "idle",
-  addkError: null,
+  addResponse: "",
+  addError: null,
   putStatus: "idle",
+  putResponse: "",
   putError: null,
 };
 
@@ -63,7 +65,6 @@ export const getTasks = createAsyncThunk(
           (element, index, self) =>
             index === self.findIndex((e) => e._id === element._id)
         );
-        console.log(filteredTasks);
         return filteredTasks;
       }
     } catch (err) {
@@ -140,7 +141,6 @@ export const putTask = createAsyncThunk(
     try {
       const response = await fetch(request.url, request.options);
       const json = await response.json();
-      console.log(taskID, steps);
       return { response: json, taskID, steps };
     } catch (err) {
       return err;
@@ -181,6 +181,7 @@ export const calendarSlice = createSlice({
     },
     [addTasks.fulfilled]: (state, action) => {
       state.addStatus = "succeeded";
+      state.addResponse = action.payload.response;
     },
     [addTasks.rejected]: (state, action) => {
       state.addStatus = "failed";
@@ -197,6 +198,7 @@ export const calendarSlice = createSlice({
         }
         return task;
       });
+      state.putResponse = action.payload.response.response;
     },
     [putTask.rejected]: (state, action) => {
       state.putStatus = "failed";

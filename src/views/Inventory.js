@@ -64,10 +64,13 @@ const Schedule = () => {
     status,
     error,
     addStatus,
+    addResponse,
     addError,
     editStatus,
+    editResponse,
     editError,
     deleteStatus,
+    deleteResponse,
     deleteError,
   } = useSelector((state) => state.inventory);
   const dispatch = useDispatch();
@@ -159,7 +162,7 @@ const Schedule = () => {
             })
           )
         }
-        message={deleteError ? deleteError : "Item deleted"}
+        message={deleteError ? deleteError : deleteResponse}
         activate={
           deleteStatus === "succeeded" || deleteStatus === "failed"
             ? true
@@ -175,7 +178,7 @@ const Schedule = () => {
             })
           )
         }
-        message={addError ? addError : "Item added"}
+        message={addError ? addError : addResponse}
         activate={
           addStatus === "succeeded" || addStatus === "failed" ? true : false
         }
@@ -189,7 +192,7 @@ const Schedule = () => {
             })
           )
         }
-        message={editError ? editError : "Item edited"}
+        message={editError ? editError : editResponse}
         activate={
           editStatus === "succeeded" || editStatus === "failed" ? true : false
         }
