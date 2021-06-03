@@ -5,6 +5,7 @@ import { Form, Formik } from "formik";
 import { useState, useRef } from "react";
 import Input from "../input/Input";
 import { deleteInventory, editInventory } from "../../reducers/inventorySlice";
+import * as Yup from "yup";
 
 const Wrapper = styled.ul`
   display: grid;
@@ -45,7 +46,7 @@ const StyledForm = styled(Form)`
   grid-template-columns: repeat(6, 1fr);
   align-items: center;
   align-content: center;
-  height: 75px;
+  height: 100px;
   font-size: 14px;
   list-style: none;
   text-align: center;
@@ -112,6 +113,15 @@ const InventoryItem = ({
   );
 };
 
+const InventoryEditSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, "Must be between 2-30 characters long")
+    .max(30, "Must be between 2-30 characters long")
+    .required("Required"),
+  stock: Yup.number().integer(),
+  price: Yup.number(),
+});
+
 const InventoryItemForm = ({
   _id,
   name,
@@ -143,6 +153,7 @@ const InventoryItemForm = ({
         stock: stock,
         price: price,
       }}
+      validationSchema={InventoryEditSchema}
       onSubmit={async (values, { setSubmitting }) => {
         await dispatch(
           editInventory({
@@ -193,6 +204,7 @@ const InventoryItemForm = ({
             name="stock"
             type="number"
             component="input"
+            min="0"
             editMode
             secondary
           />
@@ -201,6 +213,8 @@ const InventoryItemForm = ({
             name="price"
             type="number"
             component="input"
+            min="0"
+            step="0.01"
             editMode
             secondary
           />

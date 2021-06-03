@@ -34,8 +34,6 @@ const Participants = styled.div`
   margin-bottom: 10px;
 `;
 
-const IndividualsWrapper = styled.div``;
-
 const ParticipantsHeader = styled.h3`
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
@@ -74,7 +72,7 @@ const SelectPeople = ({ handleCallback }) => {
   return (
     <Wrapper>
       <LabelWrapper>
-        <label htmlFor="people">People/Teams</label>
+        <label htmlFor="people">People</label>
         <input
           onChange={(e) => handleInput(e.target.value)}
           id="people"
@@ -89,7 +87,7 @@ const SelectPeople = ({ handleCallback }) => {
             Added participants
           </ParticipantsHeader>
         )}
-        <IndividualsWrapper>
+        <div>
           {selected.map((item, index) => {
             return (
               <IndividualSmall
@@ -101,7 +99,7 @@ const SelectPeople = ({ handleCallback }) => {
               />
             );
           })}
-        </IndividualsWrapper>
+        </div>
       </Participants>
       <SelectDropdown showDropdown={showDropdown}>
         {peopleFiltered.map((item, index) => {

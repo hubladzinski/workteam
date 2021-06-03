@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { useField } from "formik";
+import { ErrorMessage, useField } from "formik";
 
 const Wrapper = styled.div`
   display: grid;
@@ -46,6 +46,11 @@ const Field = styled.input`
     `}
 `;
 
+const StyledErrorMessage = styled.div`
+  font-size: 12px;
+  color: red;
+`;
+
 const Input = ({
   label,
   type,
@@ -54,6 +59,8 @@ const Input = ({
   component,
   name,
   accept,
+  min,
+  step,
   ...props
 }) => {
   const [field] = useField(name);
@@ -70,9 +77,14 @@ const Input = ({
         type={type}
         accept={accept}
         as={component}
+        min={min}
+        step={step}
         {...field}
         {...props}
       />
+      <StyledErrorMessage>
+        <ErrorMessage name={name} />
+      </StyledErrorMessage>
     </Wrapper>
   );
 };

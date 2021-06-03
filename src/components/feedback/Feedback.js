@@ -12,6 +12,7 @@ const Wrapper = styled.div`
   border-radius: 3px;
   transition: transform 0.3s ease-in;
   cursor: pointer;
+  z-index: 999;
 
   ${({ activate }) =>
     activate &&

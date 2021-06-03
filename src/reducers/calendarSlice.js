@@ -52,8 +52,19 @@ export const getTasks = createAsyncThunk(
           const json = await response.json();
           return json;
         });
-        let allTasks = await Promise.all(fetchedTasks);
-        return allTasks;
+        let tasks = await Promise.all(fetchedTasks);
+        let allTasks = [];
+        tasks.forEach((array) => {
+          array.forEach((element) => {
+            allTasks.push(element);
+          });
+        });
+        let filteredTasks = allTasks.filter(
+          (element, index, self) =>
+            index === self.findIndex((e) => e._id === element._id)
+        );
+        console.log(filteredTasks);
+        return filteredTasks;
       }
     } catch (err) {
       return err;
@@ -156,13 +167,7 @@ export const calendarSlice = createSlice({
     [getTasks.fulfilled]: (state, action) => {
       state.status = "succeeded";
       if (action.payload) {
-        let tasks = [];
-        action.payload.forEach((array) => {
-          array.forEach((element) => {
-            tasks.push(element);
-          });
-        });
-        state.tasks = tasks;
+        state.tasks = action.payload;
       } else {
         state.tasks = [];
       }

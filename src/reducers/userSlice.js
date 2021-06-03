@@ -4,6 +4,8 @@ import { auth } from "../firebase";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import { storage } from "../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -137,6 +139,20 @@ export const authenticateSignup = createAsyncThunk(
   }
 );
 
+export const authenticateLoginGoogle = createAsyncThunk(
+  "user/authenticateLoginGoogle",
+  async (arg = null, { getState, dispatch }) => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const userCredentials = await signInWithPopup(auth, provider);
+      const userInfo = await login(userCredentials);
+      return userInfo;
+    } catch (err) {
+      return err;
+    }
+  }
+);
+
 export const editUser = createAsyncThunk(
   "user/editUser",
   async ({ picture, name, tel }, { getState, dispatch }) => {
@@ -153,9 +169,9 @@ export const editUser = createAsyncThunk(
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            id: _id,
-            name: name,
-            tel: tel,
+            _id,
+            name,
+            tel,
             picture: photoURL,
           }),
         },
@@ -163,8 +179,8 @@ export const editUser = createAsyncThunk(
       const response = await fetch(request.url, request.options);
       await response.json();
       const userInfo = {
-        name: name,
-        tel: tel,
+        name,
+        tel,
         picture: photoURL,
       };
       return userInfo;
@@ -182,6 +198,9 @@ export const userSlice = createSlice({
       state[action.payload.statusType] = "idle";
       state[action.payload.errorType] = null;
     },
+    logout: (state, action) => {
+      state.user = {};
+    },
   },
   extraReducers: {
     [authenticateLogin.pending]: (state, action) => {
@@ -192,6 +211,17 @@ export const userSlice = createSlice({
       state.user = action.payload;
     },
     [authenticateLogin.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+    },
+    [authenticateLoginGoogle.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [authenticateLoginGoogle.fulfilled]: (state, action) => {
+      state.status = "succeeded";
+      state.user = action.payload;
+    },
+    [authenticateLoginGoogle.rejected]: (state, action) => {
       state.status = "failed";
       state.error = action.error.message;
     },
@@ -233,6 +263,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { resetStatus } = userSlice.actions;
+export const { resetStatus, logout } = userSlice.actions;
 
 export default userSlice.reducer;

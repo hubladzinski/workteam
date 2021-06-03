@@ -5,6 +5,7 @@ import Calendar from "../components/calendar/Calendar";
 import SelectPeopleInline from "../components/select/SelectPeopleInline";
 import { useDispatch } from "react-redux";
 import { setItem } from "../reducers/calendarSlice";
+import Button from "../components/button/Button";
 
 const HeaderWrapper = styled.div`
   display: flex;

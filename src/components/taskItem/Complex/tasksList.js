@@ -46,6 +46,7 @@ const TasksList = ({ tasks, taskId }) => (
             time_start={task.time_start}
             time_end={task.time_end}
             status={
+              task.steps.length === 0 ||
               task.steps[task.steps.length - 1].status !== "completed"
                 ? "In progress"
                 : "Completed"

@@ -25,8 +25,8 @@ const Wrapper = styled.button`
   }
 `;
 
-const GoogleLogin = () => (
-  <Wrapper>
+const GoogleLogin = ({ type, ...props }) => (
+  <Wrapper type={type} {...props}>
     <img src={googleIcon} alt="google logo" />
     <span>Log in with google</span>
   </Wrapper>

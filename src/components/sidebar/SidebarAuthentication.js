@@ -3,6 +3,7 @@ import { Form, Formik } from "formik";
 import {
   authenticateLogin,
   authenticateSignup,
+  authenticateLoginGoogle,
 } from "../../reducers/userSlice";
 import { Redirect, useHistory } from "react-router-dom";
 import Icon from "../icon/Icon";
@@ -11,6 +12,7 @@ import GoogleLogin from "../button/GoogleLogin";
 import Input from "../input/Input";
 import Button from "../button/Button";
 import { useDispatch, useSelector } from "react-redux";
+import * as Yup from "yup";
 
 const Wrapper = styled.div`
   width: 400px;
@@ -72,8 +74,36 @@ const SignUp = styled.p`
   color: ${({ theme }) => theme.font1};
 `;
 
+const StyledButton = styled(Button)`
+  color: ${({ theme }) => theme.font1};
+`;
+
+const LoginSchema = Yup.object().shape({
+  email: Yup.string().email("Must be a valid email").required("Required"),
+  password: Yup.string()
+    .min(2, "Must be between 2-30 characters long")
+    .max(30, "Must be between 2-30 characters long")
+    .required("Required"),
+});
+
+const SignupSchema = Yup.object().shape({
+  email: Yup.string().email("Must be a valid email").required("Required"),
+  password: Yup.string()
+    .min(2, "Must be between 2-30 characters long")
+    .max(30, "Must be between 2-30 characters long")
+    .required("Required"),
+  confirm_password: Yup.string()
+    .min(2, "Must be between 2-30 characters long")
+    .max(30, "Must be between 2-30 characters long")
+    .required("Required")
+    .test("is-equal", "Passwords must match", function (value) {
+      const { password } = this.parent;
+      return value === password;
+    }),
+});
+
 const SidebarAuthentication = ({ mode }) => {
-  const { user } = useSelector((state) => state.user);
+  const { user, status } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -81,6 +111,10 @@ const SidebarAuthentication = ({ mode }) => {
     dispatch(
       authenticateLogin({ email: values.email, password: values.password })
     );
+  };
+
+  const handleLoginGoogle = () => {
+    dispatch(authenticateLoginGoogle());
   };
 
   const handleSignUp = async (values, { setSubmitting }) => {
@@ -108,6 +142,7 @@ const SidebarAuthentication = ({ mode }) => {
     : (component = (
         <SidebarLogin
           handleSubmit={handleLogin}
+          handleLoginGoogle={handleLoginGoogle}
           handleClick={handleChangeToSignup}
         />
       ));
@@ -118,8 +153,12 @@ const SidebarAuthentication = ({ mode }) => {
   return component;
 };
 
-const SidebarLogin = ({ handleSubmit, handleClick }) => (
-  <Formik initialValues={{ email: "", password: "" }} onSubmit={handleSubmit}>
+const SidebarLogin = ({ handleSubmit, handleClick, handleLoginGoogle }) => (
+  <Formik
+    initialValues={{ email: "", password: "" }}
+    onSubmit={handleSubmit}
+    validationSchema={LoginSchema}
+  >
     <Wrapper>
       <Logo>
         <StyledIcon src={logoIcon} />
@@ -127,7 +166,7 @@ const SidebarLogin = ({ handleSubmit, handleClick }) => (
       </Logo>
       <Header>Log in to your account</Header>
       <StyledForm>
-        <GoogleLogin />
+        <GoogleLogin onClick={handleLoginGoogle} type="button" />
         <Spacer>
           <span>or</span>
         </Spacer>
@@ -146,9 +185,9 @@ const SidebarLogin = ({ handleSubmit, handleClick }) => (
         <Button type="submit">Log in</Button>
         <SignUp>
           Dont have an account?{" "}
-          <Button onClick={handleClick} type="button" secondary>
+          <StyledButton onClick={handleClick} type="button" secondary>
             Sign up
-          </Button>
+          </StyledButton>
         </SignUp>
       </StyledForm>
     </Wrapper>
@@ -156,7 +195,11 @@ const SidebarLogin = ({ handleSubmit, handleClick }) => (
 );
 
 const SidebarSignup = ({ handleSubmit, handleClick }) => (
-  <Formik initialValues={{ email: "", password: "" }} onSubmit={handleSubmit}>
+  <Formik
+    initialValues={{ email: "", password: "", confirm_password: "" }}
+    onSubmit={handleSubmit}
+    validationSchema={SignupSchema}
+  >
     <Wrapper>
       <Logo>
         <StyledIcon src={logoIcon} />
@@ -177,12 +220,18 @@ const SidebarSignup = ({ handleSubmit, handleClick }) => (
             label={"Password"}
             component="input"
           />
+          <Input
+            name={"confirm_password"}
+            type={"password"}
+            label={"Confirm password"}
+            component="input"
+          />
           <Button type="submit">Sign up</Button>
           <SignUp>
             Already have an account?{" "}
-            <Button onClick={handleClick} type="button" secondary>
+            <StyledButton onClick={handleClick} type="button" secondary>
               Log in
-            </Button>
+            </StyledButton>
           </SignUp>
         </InnerWrapper>
       </StyledForm>

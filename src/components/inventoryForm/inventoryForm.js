@@ -5,6 +5,8 @@ import { Form, Formik } from "formik";
 import Input from "../input/Input";
 import Button from "../button/Button";
 import { addInventory } from "../../reducers/inventorySlice";
+import CustomError from "../customError/CustomError";
+import * as Yup from "yup";
 
 const StyledForm = styled(Form)`
   display: grid;
@@ -34,17 +36,40 @@ const ProgressBar = styled.progress`
   border-radius: 3px;
 `;
 
+const InventoryAddSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, "Must be between 2-30 characters long")
+    .max(30, "Must be between 2-30 characters long")
+    .required("Required"),
+  stock: Yup.number().integer(),
+  price: Yup.number(),
+});
+
 const InventoryForm = ({ ...props }) => {
   const dispatch = useDispatch();
   const formRef = useRef();
 
   const [picture, setPicture] = useState();
   const [preview, setPreview] = useState();
+  const [fileError, setFileError] = useState({ show: false, message: "" });
 
   const handleFile = () => {
     const pictureHandler = document.querySelector("#picture");
-    setPreview(URL.createObjectURL(pictureHandler.files[0]));
-    setPicture(pictureHandler.files[0]);
+    if (pictureHandler.files[0]) {
+      if (pictureHandler.files[0].size < 1048576) {
+        setPreview(URL.createObjectURL(pictureHandler.files[0]));
+        setPicture(pictureHandler.files[0]);
+        setFileError({
+          show: false,
+          message: "",
+        });
+      } else {
+        setFileError({
+          show: true,
+          message: "File must be less than 1 MB",
+        });
+      }
+    }
   };
 
   return (
@@ -56,6 +81,7 @@ const InventoryForm = ({ ...props }) => {
         price: 0,
         picture: "",
       }}
+      validationSchema={InventoryAddSchema}
       onSubmit={async (values, { setSubmitting }) => {
         try {
           dispatch(
@@ -85,6 +111,7 @@ const InventoryForm = ({ ...props }) => {
             name="stock"
             type="number"
             component="input"
+            min="0"
             secondary
           />
           <Input
@@ -92,6 +119,8 @@ const InventoryForm = ({ ...props }) => {
             name="price"
             type="number"
             component="input"
+            min="0"
+            step="0.01"
             secondary
           />
           <Input
@@ -103,6 +132,7 @@ const InventoryForm = ({ ...props }) => {
             onChange={handleFile}
             secondary
           />
+          {fileError.show && <CustomError>{fileError.message}</CustomError>}
           {preview && <Img src={preview} alt="preview" />}
           {preview && (
             <ProgressBar value="0" max="100" id="progress-bar"></ProgressBar>

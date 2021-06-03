@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { Form, Formik } from "formik";
+import { ErrorMessage, Form, Formik } from "formik";
 import Input from "../input/Input";
 import SelectPeople from "../select/SelectPeople";
 import Button from "../button/Button";
 import { requestType } from "../../backend/backend";
 import { addTasks } from "../../reducers/calendarSlice";
+import CustomError from "../customError/CustomError";
+import * as Yup from "yup";
+import moment from "moment";
 
 const StyledForm = styled(Form)`
   display: grid;
@@ -32,6 +35,7 @@ const InputWrapper = styled.div`
 
   button {
     margin-left: 10px;
+    margin-bottom: 10px;
     width: 55px;
   }
 `;
@@ -61,6 +65,30 @@ const StepsInnerHeader = styled.h4`
   margin-left: 10px;
   max-width: 500px;
 `;
+
+const StyledCustomError = styled.div`
+  margin: -15px 0 15px 0;
+`;
+
+const TaskFormSchema = Yup.object().shape({
+  title: Yup.string()
+    .min(2, "Must be between 2-30 characters long")
+    .max(30, "Must be between 2-30 characters long")
+    .required("Required"),
+  time_start: Yup.string().required("You must specify start time"),
+  time_end: Yup.string()
+    .required("You must specify end time")
+    .test(
+      "is-greater",
+      "End time must be greater than start time",
+      function (value) {
+        const { time_start } = this.parent;
+        return moment(value, "HH:mm").isSameOrAfter(
+          moment(time_start, "HH:mm")
+        );
+      }
+    ),
+});
 
 const TaskForm = ({ selectedDay, ...props }) => {
   const dispatch = useDispatch();
@@ -93,6 +121,15 @@ const TaskForm = ({ selectedDay, ...props }) => {
     setSelected(selectedPeople);
   };
 
+  const formValidation = (selectedPeople) => {
+    const errors = {};
+
+    if (selectedPeople.length < 1)
+      errors.selected = "A task must be assigned to at least 1 user";
+
+    return errors;
+  };
+
   return (
     <Formik
       initialValues={{
@@ -101,6 +138,8 @@ const TaskForm = ({ selectedDay, ...props }) => {
         time_end: "",
         note: "",
       }}
+      validationSchema={TaskFormSchema}
+      validate={() => formValidation(selected)}
       onSubmit={async (values, { setSubmitting }) => {
         const usersIDs = selected.map((item) => item._id);
         dispatch(
@@ -116,7 +155,7 @@ const TaskForm = ({ selectedDay, ...props }) => {
         );
       }}
     >
-      {({ values }) => (
+      {({ values, errors }) => (
         <StyledForm {...props}>
           <InnerWrapper>
             <Input
@@ -142,6 +181,13 @@ const TaskForm = ({ selectedDay, ...props }) => {
             />
             <Input label="Note" name="note" component="textarea" secondary />
             <SelectPeople handleCallback={handleCallback} />
+            {errors.selected && selected.length < 1 && (
+              <StyledCustomError>
+                <CustomError>
+                  A task must be assigned to at least 1 user
+                </CustomError>
+              </StyledCustomError>
+            )}
           </InnerWrapper>
           <div>
             <InputWrapper>

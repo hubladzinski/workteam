@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^12.8.3",
     "firebase": "^9.0.0-beta.1",
     "formik": "^2.2.6",
+    "moment": "^2.29.1",
     "num-words": "^1.2.2",
     "react": "^17.0.2",
     "react-calendar": "^3.4.0",
@@ -18,8 +19,10 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-spring": "^9.2.1",
+    "redux-persist": "^6.0.0",
     "styled-components": "^5.2.3",
-    "web-vitals": "^1.1.1"
+    "web-vitals": "^1.1.1",
+    "yup": "^0.32.9"
   },
   "scripts": {
     "start": "react-scripts start",

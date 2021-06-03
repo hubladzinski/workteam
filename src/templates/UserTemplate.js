@@ -7,6 +7,8 @@ import Button from "../components/button/Button";
 import TasksList from "../components/taskItem/Complex/tasksList";
 import { editUser, resetStatus } from "../reducers/userSlice";
 import Feedback from "../components/feedback/Feedback";
+import CustomError from "../components/customError/CustomError";
+import * as Yup from "yup";
 
 const FormWrapper = styled(Form)`
   display: grid;
@@ -75,6 +77,18 @@ const StyledButton = styled(Button)`
   border-bottom: 1px solid ${({ theme }) => theme.primary2};
 `;
 
+const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
+const UserEditSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, "Must be between 2-30 characters long")
+    .max(30, "Must be between 2-30 characters long")
+    .required("Required"),
+  tel: Yup.string()
+    .matches(phoneRegExp, "Phone number is invalid")
+    .required("Required"),
+});
+
 const UserTemplate = (props) => {
   const { user, status, error, editStatus, editError } = useSelector(
     (state) => state.user
@@ -84,11 +98,25 @@ const UserTemplate = (props) => {
   const [currentPicture, setCurrentPicture] = useState();
   const [newPicture, setNewPicture] = useState();
   const [preview, setPreview] = useState();
+  const [fileError, setFileError] = useState({ show: false, message: "" });
 
   const handleFile = () => {
     const pictureHandler = document.querySelector("#picture");
-    setPreview(URL.createObjectURL(pictureHandler.files[0]));
-    setNewPicture(pictureHandler.files[0]);
+    if (pictureHandler.files[0]) {
+      if (pictureHandler.files[0].size < 1048576) {
+        setPreview(URL.createObjectURL(pictureHandler.files[0]));
+        setNewPicture(pictureHandler.files[0]);
+        setFileError({
+          show: false,
+          message: "",
+        });
+      } else {
+        setFileError({
+          show: true,
+          message: "File must be less than 1 MB",
+        });
+      }
+    }
   };
 
   useEffect(() => {
@@ -104,6 +132,7 @@ const UserTemplate = (props) => {
         name: user.name,
         tel: user.tel,
       }}
+      validationSchema={UserEditSchema}
       onSubmit={async (values, { setSubmitting }) => {
         try {
           await dispatch(
@@ -140,6 +169,9 @@ const UserTemplate = (props) => {
                     onChange={handleFile}
                     secondary
                   />
+                  {fileError.show && (
+                    <CustomError>{fileError.message}</CustomError>
+                  )}
                   {preview && (
                     <>
                       <Img src={preview} alt="preview" />

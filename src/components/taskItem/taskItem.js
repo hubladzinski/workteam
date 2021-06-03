@@ -33,12 +33,7 @@ const ActionsWrapper = styled.li`
 `;
 
 const Status = styled.li`
-  color: #4a8e2a;
-`;
-
-const StyledButton = styled(Button)`
-  color: ${({ theme }) => theme.background};
-  border-bottom: 1px solid ${({ theme }) => theme.primary2};
+  color: ${({ status }) => (status === "Completed" ? "#4a8e2a" : "#F7C30D")};
 `;
 
 const TaskItem = ({
@@ -83,13 +78,13 @@ const TaskItem = ({
       <TitleWrapper>{title}</TitleWrapper>
       <DateStartWrapper>{time_start}</DateStartWrapper>
       <DateEndWrapper>{time_end}</DateEndWrapper>
-      <Status>{status}</Status>
+      <Status status={status}>{status}</Status>
       {taskId != _id && (
         <ActionsWrapper>
           <div>
-            <StyledButton onClick={handleClick} secondary>
+            <Button onClick={handleClick} secondary>
               Show
-            </StyledButton>
+            </Button>
           </div>
         </ActionsWrapper>
       )}

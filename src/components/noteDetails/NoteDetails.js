@@ -54,6 +54,11 @@ const ProgressWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.border2};
 `;
 
+const IndividualsWrapper = styled.div`
+  display: grid;
+  grid-gap: 15px;
+`;
+
 const NoteDetails = ({ task }) => {
   const { user } = useSelector((state) => state.user);
   const [people, setPeople] = useState();
@@ -120,7 +125,7 @@ const NoteDetails = ({ task }) => {
           </ProgressWrapper>
         </InnerWrapper>
       </DetailsWrapper>
-      <div>
+      <IndividualsWrapper>
         <HeaderMinor>People/Teams</HeaderMinor>
         {people &&
           people.map((user) => (
@@ -134,7 +139,7 @@ const NoteDetails = ({ task }) => {
               tel={user.tel}
             />
           ))}
-      </div>
+      </IndividualsWrapper>
     </div>
   );
 };

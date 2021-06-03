@@ -17,11 +17,12 @@ const Button = styled.button`
     css`
       width: auto;
       height: auto;
+      color: ${({ theme }) => theme.background};
       font-size: 12px;
       font-weight: 500;
       background-color: transparent;
       border-radius: 0;
-      border-bottom: 1px solid ${({ theme }) => theme.font1};
+      border-bottom: 1px solid ${({ theme }) => theme.primary2};
     `}
 
   ${({ round }) =>

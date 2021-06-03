@@ -120,7 +120,7 @@ const RightMark = styled.div`
 
 const CloseMark = styled.div`
   position: absolute;
-  left: 90%;
+  left: 92%;
   font-size: 22px;
   cursor: pointer;
   padding: 10px;

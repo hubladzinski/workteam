@@ -57,6 +57,7 @@ const FormWrapper = styled.div`
 const StyledInventoryForm = styled(InventoryForm)`
   position: absolute;
 `;
+
 const Schedule = () => {
   const {
     inventory,
