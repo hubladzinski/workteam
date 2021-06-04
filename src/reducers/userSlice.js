@@ -242,21 +242,25 @@ export const userSlice = createSlice({
     },
     [editUser.fulfilled]: (state, action) => {
       state.editStatus = "succeeded";
-      if (action.payload.picture) {
-        state.user = {
-          ...state.user,
-          name: action.payload.userInfo.name,
-          tel: action.payload.userInfo.tel,
-          picture: action.payload.userInfo.picture,
-        };
+      if (action.payload.response.user.n > 0) {
+        if (action.payload.picture) {
+          state.user = {
+            ...state.user,
+            name: action.payload.userInfo.name,
+            tel: action.payload.userInfo.tel,
+            picture: action.payload.userInfo.picture,
+          };
+        } else {
+          state.user = {
+            ...state.user,
+            name: action.payload.userInfo.name,
+            tel: action.payload.userInfo.tel,
+          };
+        }
+        state.editResponse = action.payload.response.response;
       } else {
-        state.user = {
-          ...state.user,
-          name: action.payload.userInfo.name,
-          tel: action.payload.userInfo.tel,
-        };
+        state.editResponse = "Something went wrong";
       }
-      state.editResponse = action.payload.response.response;
     },
     [editUser.rejected]: (state, action) => {
       state.editStatus = "failed";
