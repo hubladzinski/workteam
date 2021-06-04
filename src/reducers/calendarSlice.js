@@ -181,7 +181,11 @@ export const calendarSlice = createSlice({
     },
     [addTasks.fulfilled]: (state, action) => {
       state.addStatus = "succeeded";
-      state.addResponse = action.payload.response;
+      if (action.payload.task.title) {
+        state.addResponse = action.payload.response;
+      } else {
+        state.addResponse = "Something went wrong";
+      }
     },
     [addTasks.rejected]: (state, action) => {
       state.addStatus = "failed";
@@ -192,13 +196,17 @@ export const calendarSlice = createSlice({
     },
     [putTask.fulfilled]: (state, action) => {
       state.putStatus = "succeeded";
-      state.tasks = state.tasks.map((task) => {
-        if (task._id === action.payload.taskID) {
-          return { ...task, steps: action.payload.steps };
-        }
-        return task;
-      });
-      state.putResponse = action.payload.response.response;
+      if (action.payload.response.task.n > 0) {
+        state.tasks = state.tasks.map((task) => {
+          if (task._id === action.payload.taskID) {
+            return { ...task, steps: action.payload.steps };
+          }
+          return task;
+        });
+        state.putResponse = action.payload.response.response;
+      } else {
+        state.putResponse = "Something went wrong";
+      }
     },
     [putTask.rejected]: (state, action) => {
       state.putStatus = "failed";
