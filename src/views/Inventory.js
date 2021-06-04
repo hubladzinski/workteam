@@ -9,7 +9,7 @@ import InputSearch from "../components/input/InputSearch";
 import Button from "../components/button/Button";
 import InventoryForm from "../components/inventoryForm/inventoryForm";
 import Feedback from "../components/feedback/Feedback";
-import { useSpring, animated, useTransition } from "react-spring";
+import { animated, useTransition } from "react-spring";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -44,12 +44,6 @@ const InnerWrapper = styled.div`
   grid-gap: 20px;
 `;
 
-const StyledButton = styled(Button)`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-`;
-
 const FormWrapper = styled.div`
   position: relative;
 `;
@@ -58,7 +52,7 @@ const StyledInventoryForm = styled(InventoryForm)`
   position: absolute;
 `;
 
-const Schedule = () => {
+const Inventory = () => {
   const {
     inventory,
     status,
@@ -114,11 +108,12 @@ const Schedule = () => {
         <InnerWrapper>
           <Header>Inventory</Header>
           <FormWrapper>
-            <StyledButton
+            <Button
+              round
               onClick={() => setShowForm((prevState) => !prevState)}
             >
               +
-            </StyledButton>
+            </Button>
             {transitions(
               (styles, item) =>
                 item && (
@@ -201,4 +196,4 @@ const Schedule = () => {
   );
 };
 
-export default Schedule;
+export default Inventory;

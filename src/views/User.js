@@ -9,7 +9,7 @@ const Header = styled.h2`
   font-size: 32px;
 `;
 
-const DetailsPage = () => (
+const User = () => (
   <MainTemplate>
     <Header>User profile</Header>
     <Card>
@@ -18,4 +18,4 @@ const DetailsPage = () => (
   </MainTemplate>
 );
 
-export default DetailsPage;
+export default User;

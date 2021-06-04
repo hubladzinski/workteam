@@ -1,7 +1,10 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import Icon from "../icon/Icon";
-import briefcaseIcon from "../../assets/briefcase.svg";
+import calendarIcon from "../../assets/calendar-day-solid.svg";
+import inventoryIcon from "../../assets/boxes-solid.svg";
+import peopleIcon from "../../assets/users-solid.svg";
+import profileIcon from "../../assets/id-card-solid.svg";
 
 const Wrapper = styled.ul`
   display: grid;
@@ -48,25 +51,25 @@ const Navigation = () => {
       <Wrapper>
         <li>
           <Item as={NavLink} to="/calendar" activeClassName="active">
-            <StyledIcon src={briefcaseIcon} />
+            <StyledIcon src={calendarIcon} />
             <span>Calendar</span>
           </Item>
         </li>
         <li>
           <Item as={NavLink} to="/teams" activeClassName="active">
-            <StyledIcon src={briefcaseIcon} />
+            <StyledIcon src={peopleIcon} />
             <span>People</span>
           </Item>
         </li>
         <li>
           <Item as={NavLink} to="/inventory" activeClassName="active">
-            <StyledIcon src={briefcaseIcon} />
+            <StyledIcon src={inventoryIcon} />
             <span>Inventory</span>
           </Item>
         </li>
         <li>
           <Item as={NavLink} to="/user" activeClassName="active">
-            <StyledIcon src={briefcaseIcon} />
+            <StyledIcon src={profileIcon} />
             <span>User profile</span>
           </Item>
         </li>

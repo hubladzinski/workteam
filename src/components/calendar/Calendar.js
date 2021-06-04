@@ -124,6 +124,19 @@ const CloseMark = styled.div`
   font-size: 22px;
   cursor: pointer;
   padding: 10px;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+
+  &:active {
+    transform: scale(0.8);
+  }
+`;
+
+const StyledButton = styled(Button)`
+  background-color: transparent;
+  color: ${({ theme }) => theme.primary2};
 `;
 
 const Calendar = () => {
@@ -259,15 +272,15 @@ const Calendar = () => {
   return (
     <Wrapper>
       <Nav>
-        <Button onClick={() => updateDate("left")} round>
+        <StyledButton onClick={() => updateDate("left")} round>
           <i className="fas fa-angle-left"></i>
-        </Button>
+        </StyledButton>
         <NavDay>
           {monthNames[time.month]} {time.year}
         </NavDay>
-        <Button onClick={() => updateDate("right")} round>
+        <StyledButton onClick={() => updateDate("right")} round>
           <i className="fas fa-angle-right"></i>
-        </Button>
+        </StyledButton>
       </Nav>
       <InnerWrapper>
         {transitions(
