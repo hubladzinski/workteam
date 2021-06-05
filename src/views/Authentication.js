@@ -57,7 +57,9 @@ const Authentication = ({ mode }) => {
             }
             message={response}
             activate={
-              status === "succeeded" || status === "failed" ? true : false
+              (status === "succeeded" || status === "failed") && response !== ""
+                ? true
+                : false
             }
           />
         </Wrapper>
