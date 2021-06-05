@@ -8,10 +8,13 @@ const initialState = {
   status: "idle",
   error: null,
   addStatus: "idle",
+  addResponse: "",
   addError: null,
   editStatus: "idle",
+  editResponse: "",
   editError: null,
   deleteStatus: "idle",
+  deleteResponse: "",
   deleteError: null,
 };
 
@@ -116,7 +119,7 @@ export const addInventory = createAsyncThunk(
         price,
         date,
       };
-      return newInventory;
+      return { response: json, newInventory };
     } catch (err) {
       return err;
     }
@@ -148,8 +151,9 @@ export const editInventory = createAsyncThunk(
         },
       };
       const response = await fetch(request.url, request.options);
-      await response.json();
+      const json = await response.json();
       return {
+        response: json,
         _id,
         name,
         picture: photoURL,
@@ -181,8 +185,9 @@ export const deleteInventory = createAsyncThunk(
         },
       };
       const response = await fetch(request.url, request.options);
-      await response.json();
-      return { _id };
+      const json = await response.json();
+      console.log(json);
+      return { response: json, _id };
     } catch (err) {
       return err;
     }
@@ -215,7 +220,12 @@ export const inventorySlice = createSlice({
     },
     [addInventory.fulfilled]: (state, action) => {
       state.addStatus = "succeeded";
-      state.inventory = [...state.inventory, action.payload];
+      if (action.payload.response.inventory.name) {
+        state.inventory = [...state.inventory, action.payload.newInventory];
+        state.addResponse = action.payload.response.response;
+      } else {
+        state.addResponse = "Something went wrong";
+      }
     },
     [addInventory.rejected]: (state, action) => {
       state.addStatus = "failed";
@@ -226,22 +236,34 @@ export const inventorySlice = createSlice({
     },
     [editInventory.fulfilled]: (state, action) => {
       state.editStatus = "succeeded";
-      state.inventory = state.inventory.map((item) => {
-        if (item._id === action.payload._id) {
-          if (action.payload.picture) {
-            return action.payload;
-          } else {
-            return {
-              ...item,
-              _id: action.payload_id,
-              name: action.payload.name,
-              stock: action.payload.stock,
-              price: action.payload.price,
-            };
+      if (action.payload.response.inventory.n > 0) {
+        state.inventory = state.inventory.map((item) => {
+          if (item._id === action.payload._id) {
+            if (action.payload.picture) {
+              return {
+                ...item,
+                _id: action.payload_id,
+                name: action.payload.name,
+                stock: action.payload.stock,
+                price: action.payload.price,
+                picture: action.payload.picture,
+              };
+            } else {
+              return {
+                ...item,
+                _id: action.payload_id,
+                name: action.payload.name,
+                stock: action.payload.stock,
+                price: action.payload.price,
+              };
+            }
           }
-        }
-        return item;
-      });
+          return item;
+        });
+        state.editResponse = action.payload.response.response;
+      } else {
+        state.editResponse = "Something went wrong";
+      }
     },
     [editInventory.rejected]: (state, action) => {
       state.addStatus = "failed";
@@ -252,9 +274,18 @@ export const inventorySlice = createSlice({
     },
     [deleteInventory.fulfilled]: (state, action) => {
       state.deleteStatus = "succeeded";
-      state.inventory = state.inventory.filter(
-        (item) => item._id !== action.payload._id
-      );
+      if (action.payload.response.admin) {
+        if (action.payload.response.inventory.n > 0) {
+          state.inventory = state.inventory.filter(
+            (item) => item._id !== action.payload._id
+          );
+          state.deleteResponse = action.payload.response.response;
+        } else {
+          state.deleteResponse = "Something went wrong";
+        }
+      } else {
+        state.deleteResponse = action.payload.response.response;
+      }
     },
     [deleteInventory.rejected]: (state, action) => {
       state.deleteStatus = "failed";

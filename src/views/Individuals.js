@@ -24,8 +24,8 @@ const IndividualsWrapper = styled.div`
   grid-gap: 35px;
 `;
 
-const Schedule = () => {
-  const { people, status, error } = useSelector((state) => state.people);
+const Individuals = () => {
+  const { people, status } = useSelector((state) => state.people);
   const dispatch = useDispatch();
   const [filtered, setFiltered] = useState([]);
   const [search, setSearch] = useState("");
@@ -76,4 +76,4 @@ const Schedule = () => {
   );
 };
 
-export default Schedule;
+export default Individuals;

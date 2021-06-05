@@ -1,10 +1,8 @@
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useState } from "react";
 import styled from "styled-components";
 import Button from "../button/Button";
-import { requestType } from "../../backend/backend";
 import TasksList from "../taskItem/Complex/tasksList";
-import { useSpring, animated, useTransition } from "react-spring";
+import { animated, useTransition } from "react-spring";
 
 const Wrapper = styled.div`
   display: grid;
@@ -69,9 +67,7 @@ const AdvancedWrapper = styled.div`
 `;
 
 const IndividualItem = ({ _id, name, email, picture, tel, taskId }) => {
-  const { user } = useSelector((state) => state.user);
   const [toggleDetails, setToggleDetails] = useState(false);
-  const [tasks, setTasks] = useState([]);
 
   const transitions = useTransition(toggleDetails, {
     from: { opacity: 0 },
@@ -80,32 +76,6 @@ const IndividualItem = ({ _id, name, email, picture, tel, taskId }) => {
     reverse: toggleDetails,
     delay: 100,
   });
-
-  const fetchData = async (request, callback) => {
-    try {
-      const response = await fetch(request.url, request.options);
-      const json = await response.json();
-      callback(json);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    if (toggleDetails) {
-      const request = {
-        url: `${requestType.get_user_tasks}/${_id}`,
-        options: {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-            "Content-Type": "application/json",
-          },
-        },
-      };
-      fetchData(request, setTasks);
-    }
-  }, [toggleDetails, user.token, _id]);
 
   return (
     <Wrapper>
@@ -132,7 +102,7 @@ const IndividualItem = ({ _id, name, email, picture, tel, taskId }) => {
           toggleDetails && (
             <animated.div style={styles}>
               <AdvancedWrapper>
-                <TasksList tasks={tasks} taskId={taskId} />
+                <TasksList _id={_id} taskId={taskId} />
               </AdvancedWrapper>
             </animated.div>
           )

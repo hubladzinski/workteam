@@ -23,8 +23,10 @@ const initialState = {
     name: "",
   },
   status: "idle",
+  response: "",
   error: null,
   editStatus: "idle",
+  editResponse: "",
   editError: null,
 };
 
@@ -177,13 +179,13 @@ export const editUser = createAsyncThunk(
         },
       };
       const response = await fetch(request.url, request.options);
-      await response.json();
+      const json = await response.json();
       const userInfo = {
         name,
         tel,
         picture: photoURL,
       };
-      return userInfo;
+      return { response: json, userInfo };
     } catch (err) {
       return err;
     }
@@ -208,7 +210,11 @@ export const userSlice = createSlice({
     },
     [authenticateLogin.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      state.user = action.payload;
+      if (action.payload.uid) {
+        state.user = action.payload;
+      } else {
+        state.response = action.payload.code;
+      }
     },
     [authenticateLogin.rejected]: (state, action) => {
       state.status = "failed";
@@ -230,7 +236,11 @@ export const userSlice = createSlice({
     },
     [authenticateSignup.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      state.user = action.payload;
+      if (action.payload.uid) {
+        state.user = action.payload;
+      } else {
+        state.response = action.payload.code;
+      }
     },
     [authenticateSignup.rejected]: (state, action) => {
       state.status = "failed";
@@ -241,19 +251,24 @@ export const userSlice = createSlice({
     },
     [editUser.fulfilled]: (state, action) => {
       state.editStatus = "succeeded";
-      if (action.payload.picture) {
-        state.user = {
-          ...state.user,
-          name: action.payload.name,
-          tel: action.payload.tel,
-          picture: action.payload.picture,
-        };
+      if (action.payload.response.user.n > 0) {
+        if (action.payload.userInfo.picture) {
+          state.user = {
+            ...state.user,
+            name: action.payload.userInfo.name,
+            tel: action.payload.userInfo.tel,
+            picture: action.payload.userInfo.picture,
+          };
+        } else {
+          state.user = {
+            ...state.user,
+            name: action.payload.userInfo.name,
+            tel: action.payload.userInfo.tel,
+          };
+        }
+        state.editResponse = action.payload.response.response;
       } else {
-        state.user = {
-          ...state.user,
-          name: action.payload.name,
-          tel: action.payload.tel,
-        };
+        state.editResponse = "Something went wrong";
       }
     },
     [editUser.rejected]: (state, action) => {

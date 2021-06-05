@@ -79,7 +79,7 @@ const TaskItem = ({
       <DateStartWrapper>{time_start}</DateStartWrapper>
       <DateEndWrapper>{time_end}</DateEndWrapper>
       <Status status={status}>{status}</Status>
-      {taskId != _id && (
+      {taskId !== _id && (
         <ActionsWrapper>
           <div>
             <Button onClick={handleClick} secondary>

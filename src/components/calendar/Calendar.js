@@ -5,9 +5,8 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Note from "../note/Note";
 import TaskForm from "../taskForm/TaskForm";
-import { setItem, getTasks, resetStatus } from "../../reducers/calendarSlice";
-import Feedback from "../feedback/Feedback";
-import { useSpring, animated, useTransition } from "react-spring";
+import { setItem, getTasks } from "../../reducers/calendarSlice";
+import { animated, useTransition } from "react-spring";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -124,11 +123,24 @@ const CloseMark = styled.div`
   font-size: 22px;
   cursor: pointer;
   padding: 10px;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+
+  &:active {
+    transform: scale(0.8);
+  }
+`;
+
+const StyledButton = styled(Button)`
+  background-color: transparent;
+  color: ${({ theme }) => theme.primary2};
 `;
 
 const Calendar = () => {
   const dispatch = useDispatch();
-  const { time, searchCalendar, tasks, addStatus, addError } = useSelector(
+  const { time, searchCalendar, tasks, addStatus } = useSelector(
     (state) => state.calendar
   );
   const [weekDays, setWeekDays] = useState([]);
@@ -254,15 +266,15 @@ const Calendar = () => {
   return (
     <Wrapper>
       <Nav>
-        <Button onClick={() => updateDate("left")} round>
+        <StyledButton onClick={() => updateDate("left")} round>
           <i className="fas fa-angle-left"></i>
-        </Button>
+        </StyledButton>
         <NavDay>
           {monthNames[time.month]} {time.year}
         </NavDay>
-        <Button onClick={() => updateDate("right")} round>
+        <StyledButton onClick={() => updateDate("right")} round>
           <i className="fas fa-angle-right"></i>
-        </Button>
+        </StyledButton>
       </Nav>
       <InnerWrapper>
         {transitions(
@@ -307,39 +319,24 @@ const Calendar = () => {
                       taskDateStart.getMonth(),
                       taskDateStart.getDate()
                     );
-                    if (taskDateSanitized.getTime() === weekDay.getTime())
-                      return (
-                        <Note
-                          key={task._id}
-                          id={task._id}
-                          title={task.title}
-                          time_start={taskDateStart}
-                          time_end={taskDateEnd}
-                          note={task.note}
-                          steps={task.steps}
-                          users={task.users}
-                        />
-                      );
+                    return taskDateSanitized.getTime() === weekDay.getTime() ? (
+                      <Note
+                        key={task._id}
+                        id={task._id}
+                        title={task.title}
+                        time_start={taskDateStart}
+                        time_end={taskDateEnd}
+                        note={task.note}
+                        steps={task.steps}
+                        users={task.users}
+                      />
+                    ) : null;
                   })}
               </InnerColumn>
             </Column>
           );
         })}
       </InnerWrapper>
-      <Feedback
-        onClick={() =>
-          dispatch(
-            resetStatus({
-              statusType: "addStatus",
-              errorType: "addError",
-            })
-          )
-        }
-        message={addError ? addError : "Task added"}
-        activate={
-          addStatus === "succeeded" || addStatus === "failed" ? true : false
-        }
-      />
     </Wrapper>
   );
 };

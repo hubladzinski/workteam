@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { requestType } from "../backend/backend";
+import moment from "moment";
 
 const now = new Date();
 const day = now.getDate();
@@ -25,8 +26,10 @@ const initialState = {
   status: "idle",
   error: null,
   addStatus: "idle",
-  addkError: null,
+  addResponse: "",
+  addError: null,
   putStatus: "idle",
+  putResponse: "",
   putError: null,
 };
 
@@ -63,8 +66,14 @@ export const getTasks = createAsyncThunk(
           (element, index, self) =>
             index === self.findIndex((e) => e._id === element._id)
         );
-        console.log(filteredTasks);
-        return filteredTasks;
+        let sortedTasks = filteredTasks.sort((a, b) => {
+          if (moment(a.time_start).isSameOrAfter(moment(b.time_start))) {
+            return 1;
+          } else {
+            return -1;
+          }
+        });
+        return sortedTasks;
       }
     } catch (err) {
       return err;
@@ -140,7 +149,6 @@ export const putTask = createAsyncThunk(
     try {
       const response = await fetch(request.url, request.options);
       const json = await response.json();
-      console.log(taskID, steps);
       return { response: json, taskID, steps };
     } catch (err) {
       return err;
@@ -181,6 +189,11 @@ export const calendarSlice = createSlice({
     },
     [addTasks.fulfilled]: (state, action) => {
       state.addStatus = "succeeded";
+      if (action.payload.task.title) {
+        state.addResponse = action.payload.response;
+      } else {
+        state.addResponse = "Something went wrong";
+      }
     },
     [addTasks.rejected]: (state, action) => {
       state.addStatus = "failed";
@@ -191,12 +204,17 @@ export const calendarSlice = createSlice({
     },
     [putTask.fulfilled]: (state, action) => {
       state.putStatus = "succeeded";
-      state.tasks = state.tasks.map((task) => {
-        if (task._id === action.payload.taskID) {
-          return { ...task, steps: action.payload.steps };
-        }
-        return task;
-      });
+      if (action.payload.response.task.n > 0) {
+        state.tasks = state.tasks.map((task) => {
+          if (task._id === action.payload.taskID) {
+            return { ...task, steps: action.payload.steps };
+          }
+          return task;
+        });
+        state.putResponse = action.payload.response.response;
+      } else {
+        state.putResponse = "Something went wrong";
+      }
     },
     [putTask.rejected]: (state, action) => {
       state.putStatus = "failed";

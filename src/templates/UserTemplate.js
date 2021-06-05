@@ -9,6 +9,7 @@ import { editUser, resetStatus } from "../reducers/userSlice";
 import Feedback from "../components/feedback/Feedback";
 import CustomError from "../components/customError/CustomError";
 import * as Yup from "yup";
+import Loader from "../components/loader/loader";
 
 const FormWrapper = styled(Form)`
   display: grid;
@@ -90,7 +91,7 @@ const UserEditSchema = Yup.object().shape({
 });
 
 const UserTemplate = (props) => {
-  const { user, status, error, editStatus, editError } = useSelector(
+  const { user, status, editStatus, editError, editResponse } = useSelector(
     (state) => state.user
   );
   const dispatch = useDispatch();
@@ -117,6 +118,11 @@ const UserTemplate = (props) => {
         });
       }
     }
+  };
+
+  const handleSetNewPhoto = () => {
+    setCurrentPicture(preview);
+    setEditPicture(false);
   };
 
   useEffect(() => {
@@ -175,10 +181,7 @@ const UserTemplate = (props) => {
                   {preview && (
                     <>
                       <Img src={preview} alt="preview" />
-                      <Button
-                        type="button"
-                        onClick={() => setCurrentPicture(preview)}
-                      >
+                      <Button type="button" onClick={handleSetNewPhoto}>
                         Set new photo
                       </Button>
                     </>
@@ -209,7 +212,7 @@ const UserTemplate = (props) => {
             </InnerWrapper>
             <StyledSubmitButton>Update profile</StyledSubmitButton>
           </InnerWrapper>
-          <TasksList tasks={user.tasks} />
+          <TasksList _id={user._id} />
           <Feedback
             onClick={() =>
               dispatch(
@@ -219,13 +222,14 @@ const UserTemplate = (props) => {
                 })
               )
             }
-            message={editError ? editError : "Profile edited"}
+            message={editError ? editError : editResponse}
             activate={
               editStatus === "succeeded" || editStatus === "failed"
                 ? true
                 : false
             }
           />
+          {(status === "loading" || editStatus === "loading") && <Loader />}
         </FormWrapper>
       )}
     </Formik>

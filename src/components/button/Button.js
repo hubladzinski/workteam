@@ -8,9 +8,22 @@ const Button = styled.button`
   font-weight: 600;
   color: ${({ theme }) => theme.font1};
   background-color: ${({ theme }) => theme.primary1};
-  border: none;
   border-radius: 3px;
   cursor: pointer;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: 4px solid rgba(0, 0, 0, 0.25);
+
+  &:hover {
+    box-shadow: 0px 15px 25px -5px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transform: scale(0.98);
+  }
 
   ${({ secondary }) =>
     secondary &&
@@ -23,6 +36,7 @@ const Button = styled.button`
       background-color: transparent;
       border-radius: 0;
       border-bottom: 1px solid ${({ theme }) => theme.primary2};
+      box-shadow: none;
     `}
 
   ${({ round }) =>
@@ -31,18 +45,10 @@ const Button = styled.button`
       width: 50px;
       height: 50px;
       border-radius: 25px;
+      border: none;
       font-size: 24px;
-      background-color: transparent;
-      color: #1b262c;
-
-      &:hover {
-        background-color: ${({ theme }) => theme.border};
-      }
-
-      &:active {
-        background-color: ${({ theme }) => theme.font1};
-      }
-    `}
+      box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
+    `};
 `;
 
 export default Button;

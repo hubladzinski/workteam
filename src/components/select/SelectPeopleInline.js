@@ -11,6 +11,7 @@ const Wrapper = styled.div`
   position: relative;
   grid-template-columns: auto auto;
   justify-content: center;
+  z-index: 999;
 `;
 
 const LabelWrapper = styled.div`

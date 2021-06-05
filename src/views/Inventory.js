@@ -9,7 +9,8 @@ import InputSearch from "../components/input/InputSearch";
 import Button from "../components/button/Button";
 import InventoryForm from "../components/inventoryForm/inventoryForm";
 import Feedback from "../components/feedback/Feedback";
-import { useSpring, animated, useTransition } from "react-spring";
+import { animated, useTransition } from "react-spring";
+import Loader from "../components/loader/loader";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -44,12 +45,6 @@ const InnerWrapper = styled.div`
   grid-gap: 20px;
 `;
 
-const StyledButton = styled(Button)`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-`;
-
 const FormWrapper = styled.div`
   position: relative;
 `;
@@ -58,16 +53,18 @@ const StyledInventoryForm = styled(InventoryForm)`
   position: absolute;
 `;
 
-const Schedule = () => {
+const Inventory = () => {
   const {
     inventory,
     status,
-    error,
     addStatus,
+    addResponse,
     addError,
     editStatus,
+    editResponse,
     editError,
     deleteStatus,
+    deleteResponse,
     deleteError,
   } = useSelector((state) => state.inventory);
   const dispatch = useDispatch();
@@ -111,11 +108,12 @@ const Schedule = () => {
         <InnerWrapper>
           <Header>Inventory</Header>
           <FormWrapper>
-            <StyledButton
+            <Button
+              round
               onClick={() => setShowForm((prevState) => !prevState)}
             >
               +
-            </StyledButton>
+            </Button>
             {transitions(
               (styles, item) =>
                 item && (
@@ -159,7 +157,7 @@ const Schedule = () => {
             })
           )
         }
-        message={deleteError ? deleteError : "Item deleted"}
+        message={deleteError ? deleteError : deleteResponse}
         activate={
           deleteStatus === "succeeded" || deleteStatus === "failed"
             ? true
@@ -175,7 +173,7 @@ const Schedule = () => {
             })
           )
         }
-        message={addError ? addError : "Item added"}
+        message={addError ? addError : addResponse}
         activate={
           addStatus === "succeeded" || addStatus === "failed" ? true : false
         }
@@ -189,13 +187,17 @@ const Schedule = () => {
             })
           )
         }
-        message={editError ? editError : "Item edited"}
+        message={editError ? editError : editResponse}
         activate={
           editStatus === "succeeded" || editStatus === "failed" ? true : false
         }
       />
+      {(status === "loading" ||
+        addStatus === "loading" ||
+        editStatus === "loading" ||
+        deleteStatus === "loading") && <Loader />}
     </MainTemplate>
   );
 };
 
-export default Schedule;
+export default Inventory;

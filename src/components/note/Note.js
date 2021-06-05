@@ -16,6 +16,13 @@ const Wrapper = styled.button`
   text-align: left;
   grid-gap: 10px;
   border-radius: 3px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
+  border-bottom: 4px solid rgba(0, 0, 0, 0.25);
+
+  &:active {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transform: scale(0.98);
+  }
 `;
 
 const Title = styled.h3`

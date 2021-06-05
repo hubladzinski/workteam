@@ -3,6 +3,7 @@ import Navigation from "../navigation/Navigation";
 import Icon from "../icon/Icon";
 import logoIcon from "../../assets/archive-paper.svg";
 import Button from "../button/Button";
+import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../reducers/userSlice";
@@ -27,6 +28,7 @@ const Logo = styled.div`
   font-weight: 700;
   color: ${({ theme }) => theme.primary2};
   stroke: ${({ theme }) => theme.primary2};
+  text-decoration: none;
 `;
 
 const StyledIcon = styled(Icon)`
@@ -73,7 +75,7 @@ const Sidebar = () => {
 
   return (
     <Wrapper>
-      <Logo>
+      <Logo as={NavLink} to="/calendar">
         <StyledIcon src={logoIcon} />
         <p>WorkTeam</p>
       </Logo>
