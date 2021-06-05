@@ -111,7 +111,6 @@ const TaskForm = ({ selectedDay, ...props }) => {
   };
 
   const handleClickRemove = (id) => {
-    console.log(id);
     let newSteps = steps.filter((item) => item.id !== id);
     setSteps(newSteps);
   };

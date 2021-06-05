@@ -186,7 +186,6 @@ export const deleteInventory = createAsyncThunk(
       };
       const response = await fetch(request.url, request.options);
       const json = await response.json();
-      console.log(json);
       return { response: json, _id };
     } catch (err) {
       return err;

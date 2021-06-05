@@ -8,7 +8,7 @@ import { setItem } from "../reducers/calendarSlice";
 import { useSelector } from "react-redux";
 import { resetStatus } from "../reducers/calendarSlice";
 import Feedback from "../components/feedback/Feedback";
-import Loader from "../components/loader/loader";
+import Loader from "../components/loader/Loader";
 
 const HeaderWrapper = styled.div`
   display: flex;

@@ -238,7 +238,6 @@ const Calendar = () => {
       daysInMonth,
       daysInPreviousMonth,
     };
-    console.log(updatedTime);
     dispatch(setItem({ type: "time", data: updatedTime }));
   };
 

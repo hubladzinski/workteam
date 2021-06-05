@@ -7,7 +7,7 @@ import SidebarAuthentication from "../components/sidebar/SidebarAuthentication";
 import Icon from "../components/icon/Icon";
 import loginIcon from "../assets/login_icon.svg";
 import { useSelector, useDispatch } from "react-redux";
-import Loader from "../components/loader/loader";
+import Loader from "../components/loader/Loader";
 import Feedback from "../components/feedback/Feedback";
 import { resetStatus } from "../reducers/userSlice";
 
@@ -45,7 +45,9 @@ const Authentication = ({ mode }) => {
             <Icon src={loginIcon} />
             <Header>Basically a big todo app</Header>
           </WrapperIcon>
-          {status === "loading" && <Loader />}
+          {status === "loading" && (
+            <Loader>Backend is booting please wait...</Loader>
+          )}
           <Feedback
             onClick={() =>
               dispatch(

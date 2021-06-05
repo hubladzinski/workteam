@@ -7,10 +7,10 @@ import Card from "../components/card/Card";
 import InventoryItem from "../components/inventoryItem/InventoryItem";
 import InputSearch from "../components/input/InputSearch";
 import Button from "../components/button/Button";
-import InventoryForm from "../components/inventoryForm/inventoryForm";
+import InventoryForm from "../components/inventoryForm/InventoryForm";
 import Feedback from "../components/feedback/Feedback";
 import { animated, useTransition } from "react-spring";
-import Loader from "../components/loader/loader";
+import Loader from "../components/loader/Loader";
 
 const HeaderWrapper = styled.div`
   display: flex;

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import TaskItem from "../taskItem";
+import TaskItem from "../TaskItem";
 import { requestType } from "../../../backend/backend";
-import Loader from "../../loader/loader";
+import Loader from "../../loader/Loader";
 
 const Wrapper = styled.div`
   position: relative;

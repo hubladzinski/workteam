@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import Input from "../components/input/Input";
 import { Form, Formik } from "formik";
 import Button from "../components/button/Button";
-import TasksList from "../components/taskItem/Complex/tasksList";
+import TasksList from "../components/taskItem/Complex/TasksList";
 import { editUser, resetStatus } from "../reducers/userSlice";
 import Feedback from "../components/feedback/Feedback";
 import CustomError from "../components/customError/CustomError";
 import * as Yup from "yup";
-import Loader from "../components/loader/loader";
+import Loader from "../components/loader/Loader";
 
 const FormWrapper = styled(Form)`
   display: grid;

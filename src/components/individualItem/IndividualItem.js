@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import Button from "../button/Button";
-import TasksList from "../taskItem/Complex/tasksList";
+import TasksList from "../taskItem/Complex/TasksList";
 import { animated, useTransition } from "react-spring";
 
 const Wrapper = styled.div`
