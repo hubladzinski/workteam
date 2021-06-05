@@ -23,6 +23,7 @@ const initialState = {
     name: "",
   },
   status: "idle",
+  response: "",
   error: null,
   editStatus: "idle",
   editResponse: "",
@@ -209,7 +210,11 @@ export const userSlice = createSlice({
     },
     [authenticateLogin.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      state.user = action.payload;
+      if (action.payload.uid) {
+        state.user = action.payload;
+      } else {
+        state.response = action.payload.code;
+      }
     },
     [authenticateLogin.rejected]: (state, action) => {
       state.status = "failed";
@@ -231,7 +236,11 @@ export const userSlice = createSlice({
     },
     [authenticateSignup.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      state.user = action.payload;
+      if (action.payload.uid) {
+        state.user = action.payload;
+      } else {
+        state.response = action.payload.code;
+      }
     },
     [authenticateSignup.rejected]: (state, action) => {
       state.status = "failed";
@@ -243,7 +252,7 @@ export const userSlice = createSlice({
     [editUser.fulfilled]: (state, action) => {
       state.editStatus = "succeeded";
       if (action.payload.response.user.n > 0) {
-        if (action.payload.picture) {
+        if (action.payload.userInfo.picture) {
           state.user = {
             ...state.user,
             name: action.payload.userInfo.name,

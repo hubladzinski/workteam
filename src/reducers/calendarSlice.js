@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { requestType } from "../backend/backend";
+import moment from "moment";
 
 const now = new Date();
 const day = now.getDate();
@@ -65,7 +66,14 @@ export const getTasks = createAsyncThunk(
           (element, index, self) =>
             index === self.findIndex((e) => e._id === element._id)
         );
-        return filteredTasks;
+        let sortedTasks = filteredTasks.sort((a, b) => {
+          if (moment(a.time_start).isSameOrAfter(moment(b.time_start))) {
+            return 1;
+          } else {
+            return -1;
+          }
+        });
+        return sortedTasks;
       }
     } catch (err) {
       return err;

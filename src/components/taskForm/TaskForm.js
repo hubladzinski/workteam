@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { ErrorMessage, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import Input from "../input/Input";
 import SelectPeople from "../select/SelectPeople";
 import Button from "../button/Button";
-import { requestType } from "../../backend/backend";
 import { addTasks } from "../../reducers/calendarSlice";
 import CustomError from "../customError/CustomError";
 import * as Yup from "yup";

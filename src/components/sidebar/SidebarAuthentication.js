@@ -5,6 +5,7 @@ import {
   authenticateSignup,
   authenticateLoginGoogle,
 } from "../../reducers/userSlice";
+import { setItem } from "../../reducers/calendarSlice";
 import { Redirect, useHistory } from "react-router-dom";
 import Icon from "../icon/Icon";
 import logoIcon from "../../assets/archive-paper.svg";
@@ -103,9 +104,56 @@ const SignupSchema = Yup.object().shape({
 });
 
 const SidebarAuthentication = ({ mode }) => {
-  const { user, status } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const withoutLoginData = [
+    {
+      name: "user@test.pl",
+      tel: "",
+      email: "user@test.pl",
+      picture:
+        "https://images.pexels.com/photos/7473931/pexels-photo-7473931.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+      admin: false,
+      tasks: [
+        "60bb57b139eb4b00047d6e96",
+        "60bb58d139eb4b00047d6e9a",
+        "60bb58ee39eb4b00047d6e9e",
+        "60bb590739eb4b00047d6ea2",
+        "60bb591f39eb4b00047d6ea6",
+        "60bb593d39eb4b00047d6eaa",
+        "60bb595739eb4b00047d6eae",
+        "60bb597e39eb4b00047d6eb2",
+        "60bb599239eb4b00047d6eb6",
+      ],
+      _id: "60bb53fb39eb4b00047d6e94",
+      uid: "t5qrmpWzgAbPQS9Qdki3dcptNrH2",
+      __v: 0,
+    },
+    {
+      name: "user2@test.pl",
+      tel: "000000000",
+      email: "user2@test.pl",
+      picture:
+        "https://firebasestorage.googleapis.com/v0/b/workteam-b437f.appspot.com/o/60bb544639eb4b00047d6e95?alt=media&token=e0fcc2fc-79d4-48f5-af97-10bd0ceda86c",
+      admin: false,
+      tasks: [
+        "60bb57b139eb4b00047d6e96",
+        "60bb58d139eb4b00047d6e9a",
+        "60bb58ee39eb4b00047d6e9e",
+        "60bb590739eb4b00047d6ea2",
+        "60bb591f39eb4b00047d6ea6",
+        "60bb593d39eb4b00047d6eaa",
+        "60bb595739eb4b00047d6eae",
+        "60bb597e39eb4b00047d6eb2",
+        "60bb599239eb4b00047d6eb6",
+      ],
+      _id: "60bb544639eb4b00047d6e95",
+      uid: "4wzw76efdNgto9gqbud75m3prN72",
+      __v: 0,
+    },
+  ];
 
   const handleLogin = async (values, { setSubmitting }) => {
     dispatch(
@@ -121,6 +169,11 @@ const SidebarAuthentication = ({ mode }) => {
     dispatch(
       authenticateSignup({ email: values.email, password: values.password })
     );
+  };
+
+  const handleWithoutLogin = () => {
+    dispatch(setItem({ type: "searchCalendar", data: withoutLoginData }));
+    dispatch(authenticateLogin({ email: "user@test.pl", password: "user123" }));
   };
 
   const handleChangeToSignup = () => {
@@ -144,6 +197,7 @@ const SidebarAuthentication = ({ mode }) => {
           handleSubmit={handleLogin}
           handleLoginGoogle={handleLoginGoogle}
           handleClick={handleChangeToSignup}
+          handleWithoutLogin={handleWithoutLogin}
         />
       ));
 
@@ -153,7 +207,12 @@ const SidebarAuthentication = ({ mode }) => {
   return component;
 };
 
-const SidebarLogin = ({ handleSubmit, handleClick, handleLoginGoogle }) => (
+const SidebarLogin = ({
+  handleSubmit,
+  handleClick,
+  handleLoginGoogle,
+  handleWithoutLogin,
+}) => (
   <Formik
     initialValues={{ email: "", password: "" }}
     onSubmit={handleSubmit}
@@ -183,6 +242,9 @@ const SidebarLogin = ({ handleSubmit, handleClick, handleLoginGoogle }) => (
           component="input"
         />
         <Button type="submit">Log in</Button>
+        <Button type="button" onClick={handleWithoutLogin}>
+          Use without account
+        </Button>
         <SignUp>
           Dont have an account?{" "}
           <StyledButton onClick={handleClick} type="button" secondary>

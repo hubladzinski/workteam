@@ -25,7 +25,7 @@ const IndividualsWrapper = styled.div`
 `;
 
 const Individuals = () => {
-  const { people, status, error } = useSelector((state) => state.people);
+  const { people, status } = useSelector((state) => state.people);
   const dispatch = useDispatch();
   const [filtered, setFiltered] = useState([]);
   const [search, setSearch] = useState("");

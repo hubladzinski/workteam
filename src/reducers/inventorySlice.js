@@ -240,7 +240,14 @@ export const inventorySlice = createSlice({
         state.inventory = state.inventory.map((item) => {
           if (item._id === action.payload._id) {
             if (action.payload.picture) {
-              return action.payload;
+              return {
+                ...item,
+                _id: action.payload_id,
+                name: action.payload.name,
+                stock: action.payload.stock,
+                price: action.payload.price,
+                picture: action.payload.picture,
+              };
             } else {
               return {
                 ...item,
@@ -267,13 +274,17 @@ export const inventorySlice = createSlice({
     },
     [deleteInventory.fulfilled]: (state, action) => {
       state.deleteStatus = "succeeded";
-      if (action.payload.response.inventory.n > 0) {
-        state.inventory = state.inventory.filter(
-          (item) => item._id !== action.payload._id
-        );
-        state.deleteResponse = action.payload.response.response;
+      if (action.payload.response.admin) {
+        if (action.payload.response.inventory.n > 0) {
+          state.inventory = state.inventory.filter(
+            (item) => item._id !== action.payload._id
+          );
+          state.deleteResponse = action.payload.response.response;
+        } else {
+          state.deleteResponse = "Something went wrong";
+        }
       } else {
-        state.deleteResponse = "Something went wrong";
+        state.deleteResponse = action.payload.response.response;
       }
     },
     [deleteInventory.rejected]: (state, action) => {

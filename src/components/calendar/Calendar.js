@@ -5,8 +5,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Note from "../note/Note";
 import TaskForm from "../taskForm/TaskForm";
-import { setItem, getTasks, resetStatus } from "../../reducers/calendarSlice";
-import Feedback from "../feedback/Feedback";
+import { setItem, getTasks } from "../../reducers/calendarSlice";
 import { animated, useTransition } from "react-spring";
 
 const Wrapper = styled.div`
@@ -141,14 +140,9 @@ const StyledButton = styled(Button)`
 
 const Calendar = () => {
   const dispatch = useDispatch();
-  const {
-    time,
-    searchCalendar,
-    tasks,
-    addStatus,
-    addError,
-    addResponse,
-  } = useSelector((state) => state.calendar);
+  const { time, searchCalendar, tasks, addStatus } = useSelector(
+    (state) => state.calendar
+  );
   const [weekDays, setWeekDays] = useState([]);
   const [selectedDay, setSelectedDay] = useState();
   const [showTaskForm, setShowTaskForm] = useState(false);
@@ -325,39 +319,24 @@ const Calendar = () => {
                       taskDateStart.getMonth(),
                       taskDateStart.getDate()
                     );
-                    if (taskDateSanitized.getTime() === weekDay.getTime())
-                      return (
-                        <Note
-                          key={task._id}
-                          id={task._id}
-                          title={task.title}
-                          time_start={taskDateStart}
-                          time_end={taskDateEnd}
-                          note={task.note}
-                          steps={task.steps}
-                          users={task.users}
-                        />
-                      );
+                    return taskDateSanitized.getTime() === weekDay.getTime() ? (
+                      <Note
+                        key={task._id}
+                        id={task._id}
+                        title={task.title}
+                        time_start={taskDateStart}
+                        time_end={taskDateEnd}
+                        note={task.note}
+                        steps={task.steps}
+                        users={task.users}
+                      />
+                    ) : null;
                   })}
               </InnerColumn>
             </Column>
           );
         })}
       </InnerWrapper>
-      <Feedback
-        onClick={() =>
-          dispatch(
-            resetStatus({
-              statusType: "addStatus",
-              errorType: "addError",
-            })
-          )
-        }
-        message={addError ? addError : addResponse}
-        activate={
-          addStatus === "succeeded" || addStatus === "failed" ? true : false
-        }
-      />
     </Wrapper>
   );
 };

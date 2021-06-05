@@ -6,6 +6,10 @@ import GlobalStyle from "../utils/globalStyles";
 import SidebarAuthentication from "../components/sidebar/SidebarAuthentication";
 import Icon from "../components/icon/Icon";
 import loginIcon from "../assets/login_icon.svg";
+import { useSelector, useDispatch } from "react-redux";
+import Loader from "../components/loader/loader";
+import Feedback from "../components/feedback/Feedback";
+import { resetStatus } from "../reducers/userSlice";
 
 const Wrapper = styled.div`
   background: linear-gradient(
@@ -28,6 +32,9 @@ const Header = styled.h3`
 `;
 
 const Authentication = ({ mode }) => {
+  const dispatch = useDispatch();
+  const { status, response } = useSelector((state) => state.user);
+
   return (
     <>
       <GlobalStyle />
@@ -38,6 +45,21 @@ const Authentication = ({ mode }) => {
             <Icon src={loginIcon} />
             <Header>Basically a big todo app</Header>
           </WrapperIcon>
+          {status === "loading" && <Loader />}
+          <Feedback
+            onClick={() =>
+              dispatch(
+                resetStatus({
+                  statusType: "status",
+                  errorType: "error",
+                })
+              )
+            }
+            message={response}
+            activate={
+              status === "succeeded" || status === "failed" ? true : false
+            }
+          />
         </Wrapper>
       </ThemeProvider>
     </>

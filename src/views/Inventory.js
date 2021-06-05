@@ -10,6 +10,7 @@ import Button from "../components/button/Button";
 import InventoryForm from "../components/inventoryForm/inventoryForm";
 import Feedback from "../components/feedback/Feedback";
 import { animated, useTransition } from "react-spring";
+import Loader from "../components/loader/loader";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -56,7 +57,6 @@ const Inventory = () => {
   const {
     inventory,
     status,
-    error,
     addStatus,
     addResponse,
     addError,
@@ -192,6 +192,10 @@ const Inventory = () => {
           editStatus === "succeeded" || editStatus === "failed" ? true : false
         }
       />
+      {(status === "loading" ||
+        addStatus === "loading" ||
+        editStatus === "loading" ||
+        deleteStatus === "loading") && <Loader />}
     </MainTemplate>
   );
 };
