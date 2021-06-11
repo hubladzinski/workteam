@@ -1,14 +1,12 @@
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import MainTemplate from "../templates/MainTemplate";
-import Card from "../components/card/Card";
-import Calendar from "../components/calendar/Calendar";
-import SelectPeopleInline from "../components/select/SelectPeopleInline";
-import { useDispatch } from "react-redux";
-import { setItem } from "../reducers/calendarSlice";
-import { useSelector } from "react-redux";
-import { resetStatus } from "../reducers/calendarSlice";
-import Feedback from "../components/feedback/Feedback";
-import Loader from "../components/loader/Loader";
+import { resetStatus, setItem } from "../reducers/calendarSlice";
+import MainTemplate from "../templates/mainTemplate/MainTemplate";
+import Card from "../components/atoms/card/Card";
+import Calendar from "../templates/calendar/Calendar";
+import SelectPeopleInline from "../components/molecules/select/SelectPeopleInline";
+import Feedback from "../components/atoms/feedback/Feedback";
+import Loader from "../components/atoms/loader/Loader";
 
 const HeaderWrapper = styled.div`
   display: flex;

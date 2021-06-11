@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Root from "./views/Root";
-import store from "./store/index";
 import { Provider } from "react-redux";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
+import Root from "./views/Root";
+import store from "./store/index";
 
 let persistor = persistStore(store);
 

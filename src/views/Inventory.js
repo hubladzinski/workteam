@@ -1,16 +1,16 @@
-import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getInventory, resetStatus } from "../reducers/inventorySlice";
-import MainTemplate from "../templates/MainTemplate";
-import Card from "../components/card/Card";
-import InventoryItem from "../components/inventoryItem/InventoryItem";
-import InputSearch from "../components/input/InputSearch";
-import Button from "../components/button/Button";
-import InventoryForm from "../components/inventoryForm/InventoryForm";
-import Feedback from "../components/feedback/Feedback";
+import styled from "styled-components";
 import { animated, useTransition } from "react-spring";
-import Loader from "../components/loader/Loader";
+import { getInventory, resetStatus } from "../reducers/inventorySlice";
+import MainTemplate from "../templates/mainTemplate/MainTemplate";
+import Card from "../components/atoms/card/Card";
+import InventoryItem from "../components/molecules/inventoryItem/InventoryItem";
+import InputSearch from "../components/atoms/input/InputSearch";
+import Button from "../components/atoms/button/Button";
+import InventoryForm from "../components/molecules/inventoryForm/InventoryForm";
+import Feedback from "../components/atoms/feedback/Feedback";
+import Loader from "../components/atoms/loader/Loader";
 
 const HeaderWrapper = styled.div`
   display: flex;

@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import MainTemplate from "../templates/MainTemplate";
-import Card from "../components/card/Card";
-import IndividualItem from "../components/individualItem/IndividualItem";
-import InputSearch from "../components/input/InputSearch";
-import Feedback from "../components/feedback/Feedback";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import styled from "styled-components";
 import { getPeople } from "../reducers/peopleSlice";
+import MainTemplate from "../templates/mainTemplate/MainTemplate";
+import IndividualItem from "../templates/individualItem/IndividualItem";
+import Card from "../components/atoms/card/Card";
+import InputSearch from "../components/atoms/input/InputSearch";
+import Feedback from "../components/atoms/feedback/Feedback";
 
 const HeaderWrapper = styled.div`
   display: flex;

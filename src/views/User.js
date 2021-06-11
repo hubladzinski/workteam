@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import MainTemplate from "../templates/MainTemplate";
-import Card from "../components/card/Card";
-import UserTemplate from "../templates/UserTemplate";
+import MainTemplate from "../templates/mainTemplate/MainTemplate";
+import Card from "../components/atoms/card/Card";
+import UserTemplate from "../templates/userTemplate/UserTemplate";
 
 const Header = styled.h2`
   font-family: ${({ theme }) => theme.fontFamily2};

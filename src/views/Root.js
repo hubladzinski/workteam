@@ -1,11 +1,11 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import AuthRoute from "../utils/AuthRoute";
-import Schedule from "../views/Schedule";
-import Inventory from "../views/Inventory";
-import Individuals from "../views/Individuals";
+import Schedule from "./Schedule";
+import Inventory from "./Inventory";
+import Individuals from "./Individuals";
 import Login from "./Authentication";
-import DetailsPage from "../views/DetailsPage";
-import User from "../views/User";
+import DetailsPage from "./DetailsPage";
+import User from "./User";
 
 const Root = () => (
   <BrowserRouter>

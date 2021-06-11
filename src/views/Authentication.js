@@ -1,15 +1,14 @@
 import React from "react";
-import styled from "styled-components";
-import { ThemeProvider } from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+import styled, { ThemeProvider } from "styled-components";
+import { resetStatus } from "../reducers/userSlice";
 import { theme } from "../utils/theme";
 import GlobalStyle from "../utils/globalStyles";
-import SidebarAuthentication from "../components/sidebar/SidebarAuthentication";
-import Icon from "../components/icon/Icon";
+import SidebarAuthentication from "../components/organisms/sidebar/SidebarAuthentication";
+import Icon from "../components/atoms/icon/Icon";
 import loginIcon from "../assets/login_icon.svg";
-import { useSelector, useDispatch } from "react-redux";
-import Loader from "../components/loader/Loader";
-import Feedback from "../components/feedback/Feedback";
-import { resetStatus } from "../reducers/userSlice";
+import Loader from "../components/atoms/loader/Loader";
+import Feedback from "../components/atoms/feedback/Feedback";
 
 const Wrapper = styled.div`
   background: linear-gradient(
